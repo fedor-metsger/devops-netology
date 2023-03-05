@@ -17,4 +17,3 @@
 
 Файлы **.terraformrc** и **terraform.rc**
 
-Новая строка
