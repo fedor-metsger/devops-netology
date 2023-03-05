@@ -16,3 +16,5 @@
 Файлы с оканчивающиеся на **_override.tf** или на **_override.tf.json**
 
 Файлы **.terraformrc** и **terraform.rc**
+
+Новая строка
