@@ -2,7 +2,7 @@
 
 ## Ответы к домашнему заданию к занятию «Инструменты Git»
 
-1. Найдите полный хеш и комментарий коммита, хеш которого начинается на ==aefea==.
+1. Найдите полный хеш и комментарий коммита, хеш которого начинается на <mark>aefea</mark>.
 
 
 ```
@@ -11,7 +11,7 @@ git show aefea
 Вывод:
 
 ```
-commit aefead2207ef7e2aa5dc81a34aedf0cad4c32545
+commit <mark>aefead2207ef7e2aa5dc81a34aedf0cad4c32545</mark>
 Author: Alisdair McDiarmid <alisdair@users.noreply.github.com>
 Date:   Thu Jun 18 10:29:58 2020 -0400
 
