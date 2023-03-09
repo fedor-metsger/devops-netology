@@ -23,11 +23,55 @@
     __main__.py: Python script, ASCII text executable
     fedor@DESKTOP-FEKCCDN:~$
     ```
+    
+    База данных команды файл находится в **/usr/lib/file/magic.mgc**:
+    ```
+    openat(AT_FDCWD, "/usr/share/misc/magic.mgc", O_RDONLY) = 3
+    
+    ...
+    
+    vagrant@vagrant:~$ ls -l /usr/share/misc/magic.mgc
+    lrwxrwxrwx 1 root root 24 Jan 16  2020 /usr/share/misc/magic.mgc -> ../../lib/file/magic.mgc
+    vagrant@vagrant:~$ ls -l /usr/lib/file/magic.mgc
+    -rw-r--r-- 1 root root 5811536 Jan 16  2020 /usr/lib/file/magic.mgc
+    vagrant@vagrant:~$
+    ```
 
 3. **Предположим, приложение пишет лог в текстовый файл. Этот файл оказался удалён (deleted в lsof), но сказать сигналом приложению переоткрыть файлы или просто перезапустить приложение возможности нет. Так как приложение продолжает писать в удалённый файл, место на диске постепенно заканчивается. Основываясь на знаниях о перенаправлении потоков, предложите способ обнуления открытого удалённого файла, чтобы освободить место на файловой системе.**
-    
-   Мне кажется, такого способа не существует. Пока файл открыт в приложении, он будет занимать место на диске, и приложение будет в него писать.
 
+    С помощью команды **`cat /dev/null > /proc/\<PID\>/fd/\<дескриптор\>`** можно обнулить удалённый файл:
+    ```
+    vagrant@vagrant:~$ dd if=/dev/zero of=bigfile bs=1000000 count=100
+    100+0 records in
+    100+0 records out
+    100000000 bytes (100 MB, 95 MiB) copied, 0.187829 s, 532 MB/s
+    vagrant@vagrant:~$ df -k .
+    Filesystem                        1K-blocks    Used Available Use% Mounted on
+    /dev/mapper/ubuntu--vg-ubuntu--lv  31811408 4402860  25767076  15% /
+    vagrant@vagrant:~$ ls -l /proc/self/fd
+    total 0
+    lrwx------ 1 vagrant vagrant 64 Mar  9 16:44 0 -> /dev/pts/1
+    lrwx------ 1 vagrant vagrant 64 Mar  9 16:44 1 -> /dev/pts/1
+    lrwx------ 1 vagrant vagrant 64 Mar  9 16:44 2 -> /dev/pts/1
+    lr-x------ 1 vagrant vagrant 64 Mar  9 16:44 3 -> /proc/48963/fd
+    vagrant@vagrant:~$ exec 3<bigfile
+    vagrant@vagrant:~$ ls -l /proc/self/fd
+    total 0
+    lrwx------ 1 vagrant vagrant 64 Mar  9 16:44 0 -> /dev/pts/1
+    lrwx------ 1 vagrant vagrant 64 Mar  9 16:44 1 -> /dev/pts/1
+    lrwx------ 1 vagrant vagrant 64 Mar  9 16:44 2 -> /dev/pts/1
+    lr-x------ 1 vagrant vagrant 64 Mar  9 16:44 3 -> /home/vagrant/bigfile
+    lr-x------ 1 vagrant vagrant 64 Mar  9 16:44 4 -> /proc/48964/fd
+    vagrant@vagrant:~$ rm /home/vagrant/bigfile
+    vagrant@vagrant:~$ df -k .
+    Filesystem                        1K-blocks    Used Available Use% Mounted on
+    /dev/mapper/ubuntu--vg-ubuntu--lv  31811408 4402860  25767076  15% /
+    vagrant@vagrant:~$ cat /dev/null > /proc/self/fd/3
+    vagrant@vagrant:~$ df -k .
+    Filesystem                        1K-blocks    Used Available Use% Mounted on
+    /dev/mapper/ubuntu--vg-ubuntu--lv  31811408 4305200  25864736  15% /
+    vagrant@vagrant:~$
+    ```
 4. **Занимают ли зомби-процессы ресурсы в ОС (CPU, RAM, IO)?**
 
     Нет. Зомби процесс это только запись в таблице процессов о завершившемся процессе. Ресурсов он не занимает.
@@ -39,6 +83,12 @@
     ```
     
     **На какие файлы вы увидели вызовы группы open за первую секунду работы утилиты? Воспользуйтесь пакетом bpfcc-tools для Ubuntu 20.04. Дополнительные сведения по установке по ссылке.**
+    
+    В первую секунду идут обращения к:
+    - динамическим библиотекам
+    - файлам связанным с **locale**
+    - различные python файлы из каталога **/usr/lib/python3.8**
+    Потом начинается работа с **kernel-headers**
 
  6. **Какой системный вызов использует uname -a? Приведите цитату из man по этому системному вызову, где описывается альтернативное местоположение в /proc и где можно узнать версию ядра и релиз ОС.**
 
