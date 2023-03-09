@@ -39,7 +39,56 @@
 
   6. **Получится ли вывести находясь в графическом режиме данные из PTY в какой-либо из эмуляторов TTY? Сможете ли вы наблюдать выводимые данные?**
 
+     Получится, можно наблююать, если переключиться на этот TTY
+
   7. **Выполните команду bash 5>&1. К чему она приведет? Что будет, если вы выполните echo netology > /proc/$$/fd/5? Почему так происходит?**
+
+     Первая команда запустит новый **bash**. Вывод в файловый дескриптор **5** будет перенаправлен на стандартный вывод, как правило на терминал.
+     Но так как файловый дескриптор 5 скорее всего не используется, то никакого вывода не будет. Если же специально открыть файловый дескриптор 5
+     то дочерний **bash** унаследует его, и при попытке записи в него, будет происходить вывод в стандартный поток вывода:
+     ```
+     fedor@DESKTOP-FEKCCDN:~$ ls -l /proc/self/fd
+     total 0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:44 0 -> /dev/pts/0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:44 1 -> /dev/pts/0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:44 2 -> /dev/pts/0
+     lr-x------ 1 fedor fedor 64 Mar  9 10:44 3 -> /proc/252/fd
+     fedor@DESKTOP-FEKCCDN:~$ exec 5>&1
+     fedor@DESKTOP-FEKCCDN:~$ ls -l /proc/self/fd
+     total 0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:44 0 -> /dev/pts/0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:44 1 -> /dev/pts/0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:44 2 -> /dev/pts/0
+     lr-x------ 1 fedor fedor 64 Mar  9 10:44 3 -> /proc/253/fd
+     lrwx------ 1 fedor fedor 64 Mar  9 10:44 5 -> /dev/pts/0
+     fedor@DESKTOP-FEKCCDN:~$ bash
+     total 0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:45 0 -> /dev/pts/0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:45 1 -> /dev/pts/0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:45 2 -> /dev/pts/0
+     lr-x------ 1 fedor fedor 64 Mar  9 10:45 3 -> /proc/260/fd
+     lrwx------ 1 fedor fedor 64 Mar  9 10:45 5 -> /dev/pts/0
+     fedor@DESKTOP-FEKCCDN:~$ echo qweqweqwe >&5
+     qweqweqwe
+     fedor@DESKTOP-FEKCCDN:~$
+     ```
+     Вторая команда завршится с ошибкой **"No such file or directory"**, так как как файл 5 скорее всего не открыт. Если же его открыть,
+     но тогда при записи в него вывод будет идти в стандарный поток вывода (терминал).
+     ```
+     fedor@DESKTOP-FEKCCDN:~$ ls -l /proc/self/fd
+     total 0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:47 0 -> /dev/pts/0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:47 1 -> /dev/pts/0
+     lrwx------ 1 fedor fedor 64 Mar  9 10:47 2 -> /dev/pts/0
+     lr-x------ 1 fedor fedor 64 Mar  9 10:47 3 -> /proc/261/fd
+     lrwx------ 1 fedor fedor 64 Mar  9 10:47 5 -> /dev/pts/0
+     fedor@DESKTOP-FEKCCDN:~$ echo Netology > /proc/$$/fd/5
+     Netology
+     fedor@DESKTOP-FEKCCDN:~$ exec 5>&-
+     fedor@DESKTOP-FEKCCDN:~$ echo Netology > /proc/$$/fd/5
+     -bash: /proc/10/fd/5: No such file or directory
+     fedor@DESKTOP-FEKCCDN:~$
+     ```
 
   8. **Получится ли в качестве входного потока для pipe использовать только stderr команды, не потеряв при этом отображение stdout на pty? Напоминаем: по умолчанию через pipe передается только stdout команды слева от | на stdin команды справа. Это можно сделать, поменяв стандартные потоки местами через промежуточный новый дескриптор, который вы научились создавать в предыдущем вопросе.**
 
