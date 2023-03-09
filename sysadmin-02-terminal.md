@@ -65,7 +65,7 @@
      fedor@DESKTOP-FEKCCDN:~$
      ```
      Вторая команда завршится с ошибкой **"No such file or directory"**, так как как файл 5 скорее всего не открыт. Если же его открыть,
-     но тогда при записи в него ошибки не будет.
+     то тогда при записи в него ошибки не будет.
      ```
      fedor@DESKTOP-FEKCCDN:~$ ls -l /proc/self/fd/
      total 0
@@ -90,8 +90,16 @@
 
   8. **Получится ли в качестве входного потока для pipe использовать только stderr команды, не потеряв при этом отображение stdout на pty? Напоминаем: по умолчанию через pipe передается только stdout команды слева от | на stdin команды справа. Это можно сделать, поменяв стандартные потоки местами через промежуточный новый дескриптор, который вы научились создавать в предыдущем вопросе.**
 
-     
-
+     Получится:
+     ```
+     fedor@DESKTOP-FEKCCDN:~$ ls / 3>&1 1>&2 2>&3 | cat > /tmp/File
+     bin   dev  home  lib    lib64   lost+found  mnt  proc  run   snap  sys  usr
+     boot  etc  init  lib32  libx32  media       opt  root  sbin  srv   tmp  var
+     fedor@DESKTOP-FEKCCDN:~$ ls /qwe 3>&1 1>&2 2>&3 | cat > /tmp/File
+     fedor@DESKTOP-FEKCCDN:~$ cat /tmp/File
+     ls: cannot access '/qwe': No such file or directory
+     fedor@DESKTOP-FEKCCDN:~$
+     ```
   9. **Что выведет команда cat /proc/$$/environ? Как еще можно получить аналогичный по содержанию вывод?**
 
   10. **Используя man, опишите что доступно по адресам /proc/<PID>/cmdline, /proc/<PID>/exe.**
