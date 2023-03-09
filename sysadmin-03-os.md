@@ -30,7 +30,7 @@
 
 4. **Занимают ли зомби-процессы ресурсы в ОС (CPU, RAM, IO)?**
 
-    Нет. Зомби процесс это только запись в таблице процессов о завершившемся процессе. Ресурсов он не потребляет.
+    Нет. Зомби процесс это только запись в таблице процессов о завершившемся процессе. Ресурсов он не занимает.
 
 5. **В IO Visor BCC есть утилита opensnoop:**
     ```
@@ -41,6 +41,21 @@
     **На какие файлы вы увидели вызовы группы open за первую секунду работы утилиты? Воспользуйтесь пакетом bpfcc-tools для Ubuntu 20.04. Дополнительные сведения по установке по ссылке.**
 
  6. **Какой системный вызов использует uname -a? Приведите цитату из man по этому системному вызову, где описывается альтернативное местоположение в /proc и где можно узнать версию ядра и релиз ОС.**
+
+    Системный вызов **uname**:
+    ```
+    uname({sysname="Linux", nodename="DESKTOP-FEKCCDN", ...}) = 0
+    newfstatat(1, "", {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}, AT_EMPTY_PATH) = 0
+    uname({sysname="Linux", nodename="DESKTOP-FEKCCDN", ...}) = 0
+    uname({sysname="Linux", nodename="DESKTOP-FEKCCDN", ...}) = 0
+    write(1, "Linux DESKTOP-FEKCCDN 5.10.16.3-"..., 122Linux DESKTOP-FEKCCDN 5.10.16.3-microsoft-standard-WSL2 #1 SMP Fri Apr 2 22:23:49 UTC
+    ```
+    
+    Цитата из **man uname**:
+    ```
+    Part of the utsname information is also accessible via
+    /proc/sys/kernel/{ostype, hostname, osrelease, version, domainname}.
+    ```
 
  7. **Чем отличается последовательность команд через ; и через && в bash? Например:**
     ```
