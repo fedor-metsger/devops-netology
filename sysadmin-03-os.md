@@ -14,6 +14,15 @@
     ```
 
 2. **Попробуйте использовать команду file на объекты разных типов в файловой системе.**
+    ```
+    fedor@DESKTOP-FEKCCDN:~$ file /bin/bash
+    /bin/bash: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2,        BuildID[sha1]=33a5554034feb2af38e8c75872058883b2988bc5, for GNU/Linux 3.2.0, stripped
+    fedor@DESKTOP-FEKCCDN:~$ file /etc/hosts
+    /etc/hosts: ASCII text
+    fedor@DESKTOP-FEKCCDN:~$ file __main__.py
+    __main__.py: Python script, ASCII text executable
+    fedor@DESKTOP-FEKCCDN:~$
+    ```
 
 3. **Предположим, приложение пишет лог в текстовый файл. Этот файл оказался удалён (deleted в lsof), но сказать сигналом приложению переоткрыть файлы или просто перезапустить приложение возможности нет. Так как приложение продолжает писать в удалённый файл, место на диске постепенно заканчивается. Основываясь на знаниях о перенаправлении потоков, предложите способ обнуления открытого удалённого файла, чтобы освободить место на файловой системе.**
 
