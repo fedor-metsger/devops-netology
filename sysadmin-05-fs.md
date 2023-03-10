@@ -87,7 +87,19 @@
 
 7. **Соберите mdadm RAID0 на второй паре маленьких разделов.**
     ```
+    root@vagrant:/home/vagrant# mdadm --create /dev/md1 --level=0 --raid-devices=2 /dev/sd[bc]2
+    mdadm: Defaulting to version 1.2 metadata
+    mdadm: array /dev/md1 started.
+    root@vagrant:/home/vagrant# cat /proc/mdstat
+        Personalities : [linear] [multipath] [raid0] [raid1] [raid6] [raid5] [raid4] [raid10]
+    md1 : active raid0 sdc2[1] sdb2[0]
+        1141760 blocks super 1.2 512k chunks
 
+    md0 : active raid1 sdc1[1] sdb1[0]
+        2094080 blocks super 1.2 [2/2] [UU]
+
+    unused devices: <none>
+    root@vagrant:/home/vagrant#
     ```
 
 8. **Создайте два независимых PV на получившихся md-устройствах.**
