@@ -214,19 +214,19 @@
     ├─sda1                      8:1    0     1M  0 part
     ├─sda2                      8:2    0     2G  0 part  /boot
     └─sda3                      8:3    0    62G  0 part
-    └─ubuntu--vg-ubuntu--lv 253:0    0    31G  0 lvm   /
+        └─ubuntu--vg-ubuntu--lv 253:0  0    31G  0 lvm   /
     sdb                         8:16   0   2.6G  0 disk
     ├─sdb1                      8:17   0     2G  0 part
     │ └─md0                     9:0    0     2G  0 raid1
     └─sdb2                      8:18   0 559.8M  0 part
-        └─md1                     9:1    0   1.1G  0 raid0
-            └─vg_test-lv_raid0    253:1    0   100M  0 lvm   /tmp/new
+        └─md1                   9:1    0   1.1G  0 raid0
+            └─vg_test-lv_raid0  253:1  0   100M  0 lvm   /tmp/new
     sdc                         8:32   0   2.6G  0 disk
     ├─sdc1                      8:33   0     2G  0 part
     │ └─md0                     9:0    0     2G  0 raid1
     └─sdc2                      8:34   0 559.8M  0 part
-        └─md1                     9:1    0   1.1G  0 raid0
-            └─vg_test-lv_raid0    253:1    0   100M  0 lvm   /tmp/new
+        └─md1                   9:1    0   1.1G  0 raid0
+            └─vg_test-lv_raid0  253:1  0   100M  0 lvm   /tmp/new
     root@vagrant:/home/vagrant#
     ```
 
