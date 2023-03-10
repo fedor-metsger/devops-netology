@@ -104,12 +104,40 @@
 
 8. **Создайте два независимых PV на получившихся md-устройствах.**
     ```
-
+    root@vagrant:/home/vagrant# pvcreate /dev/md0
+        Physical volume "/dev/md0" successfully created.
+    root@vagrant:/home/vagrant# pvcreate /dev/md1
+        Physical volume "/dev/md1" successfully created.
+    root@vagrant:/home/vagrant#
     ```
 
 9. **Создайте общую volume-group на этих двух PV.**
     ```
+    root@vagrant:/home/vagrant# vgcreate vg_test /dev/md0 /dev/md1
+        Volume group "vg_test" successfully created
+    root@vagrant:/home/vagrant# vgdisplay vg_test
+        --- Volume group ---
+        VG Name               vg_test
+        System ID
+        Format                lvm2
+        Metadata Areas        2
+        Metadata Sequence No  1
+        VG Access             read/write
+        VG Status             resizable
+        MAX LV                0
+        Cur LV                0
+        Open LV               0
+        Max PV                0
+        Cur PV                2
+        Act PV                2
+        VG Size               3.08 GiB
+        PE Size               4.00 MiB
+        Total PE              789
+        Alloc PE / Size       0 / 0
+        Free  PE / Size       789 / 3.08 GiB
+        VG UUID               pWDqTd-XaE2-SyDB-XF0L-JsKV-sPWN-RUBAa6
 
+    root@vagrant:/home/vagrant#
     ```
 
 10. **Создайте LV размером 100 Мб, указав его расположение на PV с RAID0.**
