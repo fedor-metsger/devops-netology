@@ -65,22 +65,65 @@
     ```
 
 6. **Соберите mdadm RAID1 на паре разделов 2 Гб.**
+    ```
+    root@vagrant:/home/vagrant# mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sd[bc]1
+    mdadm: Note: this array has metadata at the start and
+        may not be suitable as a boot device.  If you plan to
+        store '/boot' on this device please ensure that
+        your boot-loader understands md/v1.x metadata, or use
+        --metadata=0.90
+    Continue creating array? y
+    mdadm: Defaulting to version 1.2 metadata
+    mdadm: array /dev/md0 started.
+    root@vagrant:/home/vagrant# cat /proc/mdstat
+    Personalities : [linear] [multipath] [raid0] [raid1] [raid6] [raid5] [raid4] [raid10]
+    md0 : active raid1 sdc1[1] sdb1[0]
+        2094080 blocks super 1.2 [2/2] [UU]
+        [=============>.......]  resync = 66.5% (1394496/2094080) finish=0.0min speed=232416K/sec
+
+    unused devices: <none>
+    root@vagrant:/home/vagrant#
+    ```
 
 7. **Соберите mdadm RAID0 на второй паре маленьких разделов.**
+    ```
+
+    ```
 
 8. **Создайте два независимых PV на получившихся md-устройствах.**
+    ```
+
+    ```
 
 9. **Создайте общую volume-group на этих двух PV.**
+    ```
+
+    ```
 
 10. **Создайте LV размером 100 Мб, указав его расположение на PV с RAID0.**
+    ```
+
+    ```
 
 11. **Создайте mkfs.ext4 ФС на получившемся LV.**
+    ```
+
+    ```
 
 12. **Смонтируйте этот раздел в любую директорию, например, /tmp/new.**
+    ```
+
+    ```
 
 13. **Поместите туда тестовый файл, например, wget https://mirror.yandex.ru/ubuntu/ls-lR.gz -O /tmp/new/test.gz.**
+    ```
+
+    ```
 
 14. **Прикрепите вывод lsblk.**
+    ```
+
+    ```
 
 15. **Протестируйте целостность файла:**
     ```
@@ -89,15 +132,34 @@
     0
     ```
 
+    Вывод:
+    ```
+
+    ```
+
 16. **Используя pvmove, переместите содержимое PV с RAID0 на RAID1.**
+    ```
+
+    ```
 
 17. **Сделайте --fail на устройство в вашем RAID1 md.**
+    ```
+
+    ```
 
 18. **Подтвердите выводом dmesg, что RAID1 работает в деградированном состоянии.**
+    ```
+
+    ```
 
 19. **Протестируйте целостность файла — он должен быть доступен несмотря на «сбойный» диск:**
     ```
     root@vagrant:~# gzip -t /tmp/new/test.gz
     root@vagrant:~# echo $?
     0
+    ```
+
+    Вывод:
+    ```
+
     ```
