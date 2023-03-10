@@ -142,27 +142,92 @@
 
 10. **Создайте LV размером 100 Мб, указав его расположение на PV с RAID0.**
     ```
-
+    root@vagrant:/home/vagrant# lvcreate -L 100m vg_test -n lv_raid0 /dev/md1
+        Logical volume "lv_raid0" created.
+    root@vagrant:/home/vagrant# lvdisplay vg_test
+        --- Logical volume ---
+        LV Path                /dev/vg_test/lv_raid0
+        LV Name                lv_raid0
+        VG Name                vg_test
+        LV UUID                0Gw93m-eeNi-uNX3-WEg1-10vH-QEMP-E5TjQv
+        LV Write Access        read/write
+        LV Creation host, time vagrant, 2023-03-10 13:09:16 +0000
+        LV Status              available
+        # open                 0
+        LV Size                100.00 MiB
+        Current LE             25
+        Segments               1
+        Allocation             inherit
+        Read ahead sectors     auto
+        - currently set to     4096
+        Block device           253:1
+    root@vagrant:/home/vagrant#
     ```
 
 11. **Создайте mkfs.ext4 ФС на получившемся LV.**
     ```
+    root@vagrant:/home/vagrant# mkfs.ext4 /dev/vg_test/lv_raid0
+    mke2fs 1.45.5 (07-Jan-2020)
+    Creating filesystem with 25600 4k blocks and 25600 inodes
 
+    Allocating group tables: done
+    Writing inode tables: done
+    Creating journal (1024 blocks): done
+    Writing superblocks and filesystem accounting information: done
+
+    root@vagrant:/home/vagrant#
     ```
 
 12. **Смонтируйте этот раздел в любую директорию, например, /tmp/new.**
     ```
-
+    root@vagrant:/home/vagrant# mkdir /tmp/new
+    root@vagrant:/home/vagrant# mount /dev/vg_test/lv_raid0 /tmp/new
     ```
 
 13. **Поместите туда тестовый файл, например, wget https://mirror.yandex.ru/ubuntu/ls-lR.gz -O /tmp/new/test.gz.**
     ```
+    root@vagrant:/home/vagrant# wget https://mirror.yandex.ru/ubuntu/ls-lR.gz -O /tmp/new/test.gz
+    --2023-03-10 13:13:30--  https://mirror.yandex.ru/ubuntu/ls-lR.gz
+    Resolving mirror.yandex.ru (mirror.yandex.ru)... 213.180.204.183, 2a02:6b8::183
+    Connecting to mirror.yandex.ru (mirror.yandex.ru)|213.180.204.183|:443... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: 24622334 (23M) [application/octet-stream]
+    Saving to: ‘/tmp/new/test.gz’
 
+    /tmp/new/test.gz                      100%[======================================================================>]  23.48M  2.51MB/s    in 7.5s
+
+    2023-03-10 13:13:38 (3.11 MB/s) - ‘/tmp/new/test.gz’ saved [24622334/24622334]
+
+    root@vagrant:/home/vagrant#
     ```
 
 14. **Прикрепите вывод lsblk.**
     ```
-
+    root@vagrant:/home/vagrant# lsblk
+    NAME                      MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINT
+    loop0                       7:0    0  67.8M  1 loop  /snap/lxd/22753
+    loop1                       7:1    0    62M  1 loop  /snap/core20/1611
+    loop3                       7:3    0  49.9M  1 loop  /snap/snapd/18357
+    loop4                       7:4    0  63.3M  1 loop  /snap/core20/1828
+    loop5                       7:5    0  91.9M  1 loop  /snap/lxd/24061
+    sda                         8:0    0    64G  0 disk
+    ├─sda1                      8:1    0     1M  0 part
+    ├─sda2                      8:2    0     2G  0 part  /boot
+    └─sda3                      8:3    0    62G  0 part
+    └─ubuntu--vg-ubuntu--lv 253:0    0    31G  0 lvm   /
+    sdb                         8:16   0   2.6G  0 disk
+    ├─sdb1                      8:17   0     2G  0 part
+    │ └─md0                     9:0    0     2G  0 raid1
+    └─sdb2                      8:18   0 559.8M  0 part
+        └─md1                     9:1    0   1.1G  0 raid0
+            └─vg_test-lv_raid0    253:1    0   100M  0 lvm   /tmp/new
+    sdc                         8:32   0   2.6G  0 disk
+    ├─sdc1                      8:33   0     2G  0 part
+    │ └─md0                     9:0    0     2G  0 raid1
+    └─sdc2                      8:34   0 559.8M  0 part
+        └─md1                     9:1    0   1.1G  0 raid0
+            └─vg_test-lv_raid0    253:1    0   100M  0 lvm   /tmp/new
+    root@vagrant:/home/vagrant#
     ```
 
 15. **Протестируйте целостность файла:**
@@ -174,7 +239,10 @@
 
     Вывод:
     ```
-
+    root@vagrant:/home/vagrant# gzip -t /tmp/new/test.gz
+    root@vagrant:/home/vagrant# echo $?
+    0
+    root@vagrant:/home/vagrant#
     ```
 
 16. **Используя pvmove, переместите содержимое PV с RAID0 на RAID1.**
