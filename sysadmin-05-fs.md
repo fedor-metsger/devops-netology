@@ -280,7 +280,8 @@
 
 18. **Подтвердите выводом dmesg, что RAID1 работает в деградированном состоянии.**
     ```
-
+    [ 2384.628812] md/raid1:md0: Disk failure on sdb1, disabling device.
+                   md/raid1:md0: Operation continuing on 1 devices.
     ```
 
 19. **Протестируйте целостность файла — он должен быть доступен несмотря на «сбойный» диск:**
@@ -292,5 +293,8 @@
 
     Вывод:
     ```
-
+    root@vagrant:/home/vagrant# gzip -t /tmp/new/test.gz
+    root@vagrant:/home/vagrant# echo $?
+    0
+    root@vagrant:/home/vagrant#
     ```
