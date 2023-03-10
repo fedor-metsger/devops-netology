@@ -247,12 +247,35 @@
 
 16. **Используя pvmove, переместите содержимое PV с RAID0 на RAID1.**
     ```
-
+    root@vagrant:/home/vagrant# pvmove /dev/md1 -n lv_raid0 /dev/md0
+        /dev/md1: Moved: 16.00%
+        /dev/md1: Moved: 100.00%
+    root@vagrant:/home/vagrant#
     ```
 
 17. **Сделайте --fail на устройство в вашем RAID1 md.**
     ```
+    root@vagrant:/home/vagrant# cat /proc/mdstat
+    Personalities : [linear] [multipath] [raid0] [raid1] [raid6] [raid5] [raid4] [raid10]
+    md1 : active raid0 sdc2[1] sdb2[0]
+        1141760 blocks super 1.2 512k chunks
 
+    md0 : active raid1 sdc1[1] sdb1[0]
+        2094080 blocks super 1.2 [2/2] [UU]
+
+    unused devices: <none>
+    root@vagrant:/home/vagrant#  mdadm /dev/md0 --fail /dev/sdb1
+    mdadm: set /dev/sdb1 faulty in /dev/md0
+    root@vagrant:/home/vagrant# cat /proc/mdstat
+    Personalities : [linear] [multipath] [raid0] [raid1] [raid6] [raid5] [raid4] [raid10]
+    md1 : active raid0 sdc2[1] sdb2[0]
+        1141760 blocks super 1.2 512k chunks
+
+    md0 : active raid1 sdc1[1] sdb1[0](F)
+        2094080 blocks super 1.2 [2/1] [_U]
+
+    unused devices: <none>
+    root@vagrant:/home/vagrant#
     ```
 
 18. **Подтвердите выводом dmesg, что RAID1 работает в деградированном состоянии.**
