@@ -3,6 +3,25 @@
 
 1. **Проверьте список доступных сетевых интерфейсов на вашем компьютере. Какие команды есть для этого в Linux и в Windows?**
 
+    В Linux **ip -br link**:
+    ```
+    vagrant@vagrant:~$ ip -br link
+    lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>
+    eth0             UP             08:00:27:59:cb:31 <BROADCAST,MULTICAST,UP,LOWER_UP>
+    ```
+    
+    В Windows: **netsh interface ip show interfaces**:
+    ```
+    C:\CODE\Netology\Vagrant>netsh interface ip show interfaces
+
+    Idx     Met         MTU          State                Name
+    ---  ----------  ----------  ------------  ---------------------------
+      1          75  4294967295  connected     Loopback Pseudo-Interface 1
+      4          35        1500  connected     Ethernet
+      7          25        1500  connected     Ethernet 2
+     12          35        1500  disconnected  outline-tap0
+    ```
+
 2. **Какой протокол используется для распознавания соседа по сетевому интерфейсу? Какой пакет и команды есть в Linux для этого?**
 
     Протоков **LLDP**. Команды **lldpcli**, **lldpctl**.
