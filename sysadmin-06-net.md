@@ -55,10 +55,80 @@
 3. **Какой IP-адрес у вас в интернете?**
 
     ```
-    curl -w "\n" -s https://api.ipify.org
+    fedor@DESKTOP-FEKCCDN:~$ wget -qO- ifconfig.me/ip
+    79.164.46.76
+    fedor@DESKTOP-FEKCCDN:~$
     ```
 
 4. **Какому провайдеру принадлежит ваш IP-адрес? Какой автономной системе AS? Воспользуйтесь утилитой whois.**
+
+    Провайдер: **Neo-CNT, Russian Central Telegraph, Moscow**:
+
+    ```
+    fedor@DESKTOP-FEKCCDN:~$ whois 79.164.46.76
+    % This is the RIPE Database query service.
+    % The objects are in RPSL format.
+    %
+    % The RIPE Database is subject to Terms and Conditions.
+    % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+
+    % Note: this output has been filtered.
+    %       To receive output for a database update, use the "-B" flag.
+
+    % Information related to '79.164.32.0 - 79.164.63.255'
+
+    % Abuse contact for '79.164.32.0 - 79.164.63.255' is 'abuse@cnt.ru'
+
+    inetnum:        79.164.32.0 - 79.164.63.255
+    netname:        Neo-CNT
+    descr:          Russian Central Telegraph, Moscow
+    country:        RU
+    admin-c:        VYK9-RIPE
+    admin-c:        AAP43-RIPE
+    tech-c:         VYK9-RIPE
+    status:         ASSIGNED PA
+    remarks:        INFRA-AW
+    mnt-by:         CNT-MNT
+    created:        2011-03-30T14:09:55Z
+    last-modified:  2011-03-30T14:09:55Z
+    source:         RIPE # Filtered
+
+    person:         Alexey A Petrov
+    address:        7, Tverskaya st.,
+    address:        Central Telegraph, Moscow,
+    address:        125375, Russia
+    phone:          +7 495 504 3825
+    nic-hdl:        AAP43-RIPE
+    mnt-by:         CNT-MNT
+    remarks:        Network Administrator
+    created:        2004-06-17T13:15:46Z
+    last-modified:  2017-08-25T12:15:16Z
+    source:         RIPE # Filtered
+
+    person:         Victor Y. Kovalenko
+    address:        Central Telegraph
+    address:        7, Tverskaya st.
+    address:        103375, Moscow, Russia
+    phone:          +7 495 504 4414
+    nic-hdl:        VYK9-RIPE
+    mnt-by:         CNT-MNT
+    remarks:        Network Administrator
+    created:        1970-01-01T00:00:00Z
+    last-modified:  2013-10-22T07:57:07Z
+    source:         RIPE # Filtered
+
+    % Information related to '79.164.0.0/16AS8615'
+
+    route:          79.164.0.0/16
+    descr:          CNT-network BLOCK
+    origin:         AS8615
+    mnt-by:         CNT-MNT
+    created:        2013-12-17T07:03:34Z
+    last-modified:  2013-12-17T07:03:34Z
+    source:         RIPE
+
+    % This query was served by the RIPE Database Query Service version 1.106 (ABERDEEN)
+    ```
 
 5. **Через какие сети проходит пакет, отправленный с вашего компьютера на адрес 8.8.8.8? Через какие AS? Воспользуйтесь утилитой traceroute.**
 
