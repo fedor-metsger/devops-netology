@@ -55,7 +55,7 @@
 3. **Какой IP-адрес у вас в интернете?**
 
     ```
-    fedor@DESKTOP-FEKCCDN:~$ wget -qO- ifconfig.me/ip
+    fedor@DESKTOP-FEKCCDN:~$ curl ifconfig.me
     79.164.46.76
     fedor@DESKTOP-FEKCCDN:~$
     ```
