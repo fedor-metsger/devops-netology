@@ -229,5 +229,107 @@
 
     fedor@DESKTOP-FEKCCDN:~$
     ```
+    
+    A-записи:
+    ```
+    fedor@DESKTOP-FEKCCDN:~$ dig @8.8.8.8 dns.google A
 
+    ; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> @8.8.8.8 dns.google A
+    ; (1 server found)
+    ;; global options: +cmd
+    ;; Got answer:
+    ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 56777
+    ;; flags: qr rd ra ad; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+    ;; OPT PSEUDOSECTION:
+    ; EDNS: version: 0, flags:; udp: 512
+    ;; QUESTION SECTION:
+    ;dns.google.                    IN      A
+
+    ;; ANSWER SECTION:
+    dns.google.             786     IN      A       8.8.4.4
+    dns.google.             786     IN      A       8.8.8.8
+
+    ;; Query time: 20 msec
+    ;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+    ;; WHEN: Sat Mar 11 13:55:30 MSK 2023
+    ;; MSG SIZE  rcvd: 71
+    ```
+    
 8. **Проверьте PTR записи для IP-адресов из задания 7. Какое доменное имя привязано к IP? Воспользуйтесь утилитой dig.**
+
+    Вывод для первого сервера. Адрес **216.239.32.114**, имя **ns1.zdns.google**:
+
+    ```
+    fedor@DESKTOP-FEKCCDN:~$ dig @8.8.8.8 ns1.zdns.google
+
+    ; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> @8.8.8.8 ns1.zdns.google
+    ; (1 server found)
+    ;; global options: +cmd
+    ;; Got answer:
+    ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 43343
+    ;; flags: qr rd ra ad; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+    ;; OPT PSEUDOSECTION:
+    ; EDNS: version: 0, flags:; udp: 512
+    ;; QUESTION SECTION:
+    ;ns1.zdns.google.               IN      A
+
+    ;; ANSWER SECTION:
+    ns1.zdns.google.        20617   IN      A       216.239.32.114
+
+    ;; Query time: 20 msec
+    ;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+    ;; WHEN: Sat Mar 11 13:59:07 MSK 2023
+    ;; MSG SIZE  rcvd: 60
+
+    fedor@DESKTOP-FEKCCDN:~$ dig @8.8.8.8 -x 216.239.32.114
+
+    ; <<>> DiG 9.18.1-1ubuntu1.3-Ubuntu <<>> @8.8.8.8 -x 216.239.32.114
+    ; (1 server found)
+    ;; global options: +cmd
+    ;; Got answer:
+    ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 4867
+    ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+    ;; OPT PSEUDOSECTION:
+    ; EDNS: version: 0, flags:; udp: 512
+    ;; QUESTION SECTION:
+    ;114.32.239.216.in-addr.arpa.   IN      PTR
+
+    ;; ANSWER SECTION:
+    114.32.239.216.in-addr.arpa. 21328 IN   PTR     ns1.zdns.google.
+
+    ;; Query time: 20 msec
+    ;; SERVER: 8.8.8.8#53(8.8.8.8) (UDP)
+    ;; WHEN: Sat Mar 11 13:59:15 MSK 2023
+    ;; MSG SIZE  rcvd: 85
+
+    fedor@DESKTOP-FEKCCDN:~$
+    ```
+    
+    Остальные сервера:  
+        **ns2.zdns.google** -> **216.239.34.114**  
+        **ns3.zdns.google** -> **216.239.36.114**  
+        **ns4.zdns.google** -> **216.239.38.114**  
+        
+    ```
+     ...
+    ;; ANSWER SECTION:
+    ns2.zdns.google.        21282   IN      A       216.239.34.114
+    ...
+    ;; ANSWER SECTION:
+    114.34.239.216.in-addr.arpa. 16772 IN   PTR     ns2.zdns.google.
+    ...
+    ;; ANSWER SECTION:
+    ns3.zdns.google.        21282   IN      A       216.239.36.114
+    ...
+    ;; ANSWER SECTION:
+    114.36.239.216.in-addr.arpa. 16772 IN   PTR     ns3.zdns.google.   
+    ...
+    ;; ANSWER SECTION:
+    ns4.zdns.google.        21282   IN      A       216.239.38.114
+    ...
+    ;; ANSWER SECTION:
+    114.38.239.216.in-addr.arpa. 16772 IN   PTR     ns4.zdns.google.
+    ```
