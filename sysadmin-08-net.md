@@ -169,8 +169,36 @@
     
     
 2. **Создайте dummy-интерфейс в Ubuntu. Добавьте несколько статических маршрутов. Проверьте таблицу маршрутизации.**
+    ```
+    root@vagrant:/home/vagrant# cat /etc/modprobe.d/dummy.conf
+    options dummy numdummies=2
+    root@vagrant:/home/vagrant# ip link add name dummy0 type dummy
+    root@vagrant:/home/vagrant# ip link add name dummy1 type dummy
+    root@vagrant:/home/vagrant# ip a
+    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+        link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+        inet 127.0.0.1/8 scope host lo
+            valid_lft forever preferred_lft forever
+        inet6 ::1/128 scope host
+            valid_lft forever preferred_lft forever
+    2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+        link/ether 08:00:27:59:cb:31 brd ff:ff:ff:ff:ff:ff
+        inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0
+            valid_lft 85651sec preferred_lft 85651sec
+        inet6 fe80::a00:27ff:fe59:cb31/64 scope link
+            valid_lft forever preferred_lft forever
+    3: dummy0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default qlen 1000
+        link/ether 56:99:22:a7:21:e6 brd ff:ff:ff:ff:ff:ff
+    4: dummy1: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default qlen 1000
+        link/ether a6:29:b9:bf:99:76 brd ff:ff:ff:ff:ff:ff
+    root@vagrant:/home/vagrant#
+    ```
 
 3. **Проверьте открытые TCP-порты в Ubuntu. Какие протоколы и приложения используют эти порты? Приведите несколько примеров.**
+
+    ```
+    
+    ```
 
 4. **Проверьте используемые UDP-сокеты в Ubuntu. Какие протоколы и приложения используют эти порты?**
 
