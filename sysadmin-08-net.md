@@ -196,8 +196,21 @@
 
 3. **Проверьте открытые TCP-порты в Ubuntu. Какие протоколы и приложения используют эти порты? Приведите несколько примеров.**
 
+    Ответ: Открыты порты **80**, **22**. Приложения **apache2**, **sshd**
     ```
-    
+    fedor@DESKTOP-FEKCCDN:~$ netstat -lt --numeric-ports
+    Active Internet connections (only servers)
+    Proto Recv-Q Send-Q Local Address           Foreign Address         State
+    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN
+    tcp6       0      0 [::]:80                 [::]:*                  LISTEN
+    tcp6       0      0 [::]:22                 [::]:*                  LISTEN
+    fedor@DESKTOP-FEKCCDN:~$ netstat -lt
+    Active Internet connections (only servers)
+    Proto Recv-Q Send-Q Local Address           Foreign Address         State
+    tcp        0      0 0.0.0.0:ssh             0.0.0.0:*               LISTEN
+    tcp6       0      0 [::]:http               [::]:*                  LISTEN
+    tcp6       0      0 [::]:ssh                [::]:*                  LISTEN
+    fedor@DESKTOP-FEKCCDN:~$
     ```
 
 4. **Проверьте используемые UDP-сокеты в Ubuntu. Какие протоколы и приложения используют эти порты?**
