@@ -215,6 +215,21 @@
 
 4. **Проверьте используемые UDP-сокеты в Ubuntu. Какие протоколы и приложения используют эти порты?**
 
+    У меня не было никакого софта, который слушал бы UDP порты, поэтому я запустил **netcat**:
+
+    ```
+    fedor@DESKTOP-FEKCCDN:/etc/cups$ sudo netcat -ul localhost 1000
+    ...
+    fedor@DESKTOP-FEKCCDN:~$ netstat -lu
+    Active Internet connections (only servers)
+    Proto Recv-Q Send-Q Local Address           Foreign Address         State
+    udp        0      0 localhost:1000          0.0.0.0:*
+    fedor@DESKTOP-FEKCCDN:~$ ss -au
+    State          Recv-Q          Send-Q                   Local Address:Port                   Peer Address:Port         Process
+    UNCONN         0               0                            127.0.0.1:1000                        0.0.0.0:*
+    fedor@DESKTOP-FEKCCDN:~$
+    ```
+
 5. **Используя diagrams.net, создайте L3-диаграмму вашей домашней сети или любой другой сети, с которой вы работали.**
 
 
