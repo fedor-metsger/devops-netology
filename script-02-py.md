@@ -16,9 +16,9 @@ c = a + b
 
 | Вопрос  | Ответ |
 | ------------- | ------------- |
-| Какое значение будет присвоено переменной `c`?  | ???  |
-| Как получить для переменной `c` значение 12?  | ???  |
-| Как получить для переменной `c` значение 3?  | ???  |
+| Какое значение будет присвоено переменной `c`?  | Выйдет ошибка, так как складывать целое и строку нельзя  |
+| Как получить для переменной `c` значение 12?  | a = '1'  |
+| Как получить для переменной `c` значение 3?  | b = 2 |
 
 ------
 
@@ -63,8 +63,22 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 
-```python
-???
+```
+#!/usr/bin/env python3
+
+import os
+
+PATH = r"C:\CODE\Netology\DevOps\devops-netology"
+os.chdir(PATH)
+
+bash_command = ["git status"]
+result_os = os.popen(' && '.join(bash_command)).read()
+is_change = False
+for result in result_os.split('\n'):
+    if result.find('modified') != -1:
+        prepare_result = result.replace('\tmodified:   ', '')
+        print(os.path.join(PATH, prepare_result))
+        break
 ```
 
 ### Вывод скрипта при запуске во время тестирования:
