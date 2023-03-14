@@ -165,3 +165,17 @@
 
 7. **Соберите дамп трафика утилитой tcpdump в формате pcap, 100 пакетов. Откройте файл pcap в Wireshark.**
 
+  **tcpdump**:
+  ```
+  fedor@DESKTOP-FEKCCDN:~$ sudo tcpdump -c 100 -w tcpdump.out
+  tcpdump: listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+  100 packets captured
+  108 packets received by filter
+  0 packets dropped by kernel
+  fedor@DESKTOP-FEKCCDN:~$ file tcpdump.out
+  tcpdump.out: pcap capture file, microsecond ts (little-endian) - version 2.4 (Ethernet, capture length 262144)
+  fedor@DESKTOP-FEKCCDN:~$
+  ```
+  
+  **Wireshark**:  
+  ![image](Capture07.PNG)
