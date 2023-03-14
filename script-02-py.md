@@ -45,7 +45,7 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 
-```
+```python
 #!/usr/bin/env python3
 
 import os
@@ -80,7 +80,7 @@ C:\CODE\Netology\DevOps\devops-netology>
 
 ### Ваш скрипт:
 
-```
+```python
 #!/usr/bin/python3
 
 import os
