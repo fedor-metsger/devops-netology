@@ -45,24 +45,6 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 
-```python
-???
-```
-
-### Вывод скрипта при запуске во время тестирования:
-
-```
-???
-```
-
-------
-
-## Задание 3
-
-Доработать скрипт выше так, чтобы он не только мог проверять локальный репозиторий в текущей директории, но и умел воспринимать путь к репозиторию, который мы передаём, как входной параметр. Мы точно знаем, что начальство будет проверять работу этого скрипта в директориях, которые не являются локальными репозиториями.
-
-### Ваш скрипт:
-
 ```
 #!/usr/bin/env python3
 
@@ -78,15 +60,73 @@ for result in result_os.split('\n'):
     if result.find('modified') != -1:
         prepare_result = result.replace('\tmodified:   ', '')
         print(os.path.join(PATH, prepare_result))
-        break
 ```
 
 ### Вывод скрипта при запуске во время тестирования:
 
 ```
-???
+C:\CODE\Netology\DevOps\devops-netology>python git_script.py
+C:\CODE\Netology\DevOps\devops-netology\git_script.py
+C:\CODE\Netology\DevOps\devops-netology\script-02-py.md
+
+C:\CODE\Netology\DevOps\devops-netology>
 ```
 
+------
+
+## Задание 3
+
+Доработать скрипт выше так, чтобы он не только мог проверять локальный репозиторий в текущей директории, но и умел воспринимать путь к репозиторию, который мы передаём, как входной параметр. Мы точно знаем, что начальство будет проверять работу этого скрипта в директориях, которые не являются локальными репозиториями.
+
+### Ваш скрипт:
+
+```
+#!/usr/bin/python3
+
+import os
+import sys
+
+if len(sys.argv) > 1:
+    PATH=sys.argv[1]
+else:
+    PATH=input("Введите путь к локальному репозиторию: ")
+#PATH = r"C:\CODE\Netology\DevOps\devops-netology"
+os.chdir(PATH)
+
+bash_command = ["git status"]
+result_os = os.popen(' && '.join(bash_command)).read()
+is_change = False
+for result in result_os.split('\n'):
+    if result.find('modified') != -1:
+        prepare_result = result.replace('\tmodified:   ', '')
+        print(os.path.join(PATH, prepare_result))
+```
+
+### Вывод скрипта при запуске во время тестирования:
+
+```
+C:\CODE\Netology\DevOps\devops-netology>python git_script.py
+Введите путь к локальному репозиторию: .\
+.\git_script.py
+.\script-02-py.md
+
+C:\CODE\Netology\DevOps\devops-netology>python git_script.py .\
+.\git_script.py
+.\script-02-py.md
+
+C:\CODE\Netology\DevOps\devops-netology>
+```
+### Вывод скрипта при запуске во время тестирования на Linux:
+```
+fedor@DESKTOP-FEKCCDN:/mnt/c/CODE/Netology/DevOps$ python3 devops-netology/git_script.py devops-netology
+devops-netology/git_script.py
+devops-netology/script-02-py.md
+fedor@DESKTOP-FEKCCDN:/mnt/c/CODE/Netology/DevOps$ python3 devops-netology/git_script.py
+Введите путь к локальному репозиторию: devops-netology
+devops-netology/git_script.py
+devops-netology/script-02-py.md
+fedor@DESKTOP-FEKCCDN:/mnt/c/CODE/Netology/DevOps$
+```
 ------
 
 ## Задание 4
