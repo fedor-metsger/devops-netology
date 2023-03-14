@@ -20,7 +20,7 @@ e=$(($a+$b))
 | ------------- | ------------- | ------------- |
 | `c`  | a+b  | Для обращения к переменной нужно перед именем ставить знак **$** |
 | `d`  | 1+2  | По умолчанию все переменные обрабатываются как строки |
-| 'e'  | 3 | Двойные скобки указывают на необходимость выполнения арифметических операций 
+| `e`  | 3 | Двойные скобки указывают на необходимость выполнения арифметических операций 
 
 ----
 
@@ -63,8 +63,24 @@ done
 
 ### Ваш скрипт:
 
-```bash
-???
+```
+for i in {1..5}; do
+        IP_ADDR=192.168.0.1
+        curl --connect-timeout 1 https://$IP_ADDR:80
+        if (($? != 0)); then
+                echo $IP_ADDR is not available | tee -a log
+        fi
+        IP_ADDR=173.194.222.113
+        curl --connect-timeout 1 https://$IP_ADDR:80
+        if (($? != 0)); then
+                echo $IP_ADDR is not available | tee -a log
+        fi
+        IP_ADDR=87.250.250.242
+        curl --connect-timeout 1 https://$IP_ADDR:80
+        if (($? != 0)); then
+                echo $IP_ADDR is not available | tee -a log
+        fi
+done
 ```
 
 ---
