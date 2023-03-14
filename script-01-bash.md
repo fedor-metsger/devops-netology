@@ -64,22 +64,15 @@ done
 ### Ваш скрипт:
 
 ```
+HOSTS=("192.168.0.1" "173.194.222.113" "87.250.250.242")
+
 for i in {1..5}; do
-        IP_ADDR=192.168.0.1
-        curl --connect-timeout 1 https://$IP_ADDR:80
-        if (($? != 0)); then
-                echo $IP_ADDR is not available | tee -a log
-        fi
-        IP_ADDR=173.194.222.113
-        curl --connect-timeout 1 https://$IP_ADDR:80
-        if (($? != 0)); then
-                echo $IP_ADDR is not available | tee -a log
-        fi
-        IP_ADDR=87.250.250.242
-        curl --connect-timeout 1 https://$IP_ADDR:80
-        if (($? != 0)); then
-                echo $IP_ADDR is not available | tee -a log
-        fi
+        for HOST in ${HOSTS[@]}; do
+                curl --connect-timeout 1 https://$HOST:80
+                if (($? != 0)); then
+                	echo $HOST is not available | tee -a log
+                fi
+        done
 done
 ```
 
@@ -91,28 +84,17 @@ done
 ### Ваш скрипт:
 
 ```
+HOSTS=("192.168.0.1" "173.194.222.113" "87.250.250.242")
+
 while ((1 == 1)); do
-        IP_ADDR=192.168.0.1
-        curl --connect-timeout 1 https://$IP_ADDR:80
-        if (($? != 0)); then
-                echo $IP_ADDR is not available | tee -a log
-                echo $IP_ADDR | tee -a error
-                break
-        fi
-        IP_ADDR=173.194.222.113
-        curl --connect-timeout 1 https://$IP_ADDR:80
-        if (($? != 0)); then
-                echo $IP_ADDR is not available | tee -a log
-                echo $IP_ADDR | tee -a error
-                break
-        fi
-        IP_ADDR=87.250.250.242
-        curl --connect-timeout 1 https://$IP_ADDR:80
-        if (($? != 0)); then
-                echo $IP_ADDR is not available | tee -a log
-                echo $IP_ADDR | tee -a error
-                break
-        fi
+        for HOST in ${HOSTS[@]}; do
+                curl --connect-timeout 1 https://$HOST:80
+                if (($? != 0)); then
+                        echo $HOST is not available | tee -a log
+                        echo $HOST | tee -a error
+                        exit
+                fi
+        done
 done
 ```
 
