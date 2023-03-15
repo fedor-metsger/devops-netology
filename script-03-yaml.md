@@ -21,7 +21,18 @@
 ### Ваш скрипт:
 
 ```
-???
+    { "info":"Sample JSON output from our service",
+        "elements":[
+            { "name":"first",
+            "type":"server",
+            "ip":"71.75.XX.XX"
+            },
+            { "name":"second",
+            "type":"proxy",
+            "ip":"71.78.22.43"
+            }
+        ]
+    }
 ```
 
 ---
