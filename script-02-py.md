@@ -146,11 +146,45 @@ fedor@DESKTOP-FEKCCDN:/mnt/c/CODE/Netology/DevOps$
 ### Ваш скрипт:
 
 ```python
-???
+import os
+import socket
+import json
+
+SERVICES = ["drive.google.com", "mail.google.com", "google.com"]
+SERVICES_JSON = "services.json"
+
+service_ips = {}
+prev_ips = None
+
+if os.access(SERVICES_JSON, os.R_OK):
+    with open(SERVICES_JSON, "r", encoding = "utf-8") as f:
+        prev_ips = json.load(f)
+
+for service in SERVICES:
+    try:
+        serv_ip = socket.gethostbyname(service)
+        print(service, "-", serv_ip)
+        service_ips[service] = serv_ip
+        if prev_ips and prev_ips.get(service) and prev_ips[service] != service_ips[service]:
+            print(f"[ERROR] {service} IP mismatch: {prev_ips[service]} {service_ips[service]}")
+    except:
+        print(f'Can not gethostbyname("{service}")')
+
+if not os.access(SERVICES_JSON, os.F_OK) or os.access(SERVICES_JSON, os.W_OK):
+    with open(SERVICES_JSON, "w", encoding = "utf-8") as f:
+        json.dump(service_ips, f)
+else:
+    print(f"Can not write to file {SERVICES_JSON}")
 ```
 
 ### Вывод скрипта при запуске во время тестирования:
 
 ```
-???
+C:\CODE\Netology\DevOps\devops-netology>python dns_script.py
+drive.google.com - 108.177.14.194
+[ERROR] drive.google.com IP mismatch: 74.125.205.194 108.177.14.194
+mail.google.com - 74.125.205.19
+[ERROR] mail.google.com IP mismatch: 74.125.205.17 74.125.205.19
+google.com - 64.233.165.139
+[ERROR] google.com IP mismatch: 64.233.165.102 64.233.165.139
 ```
