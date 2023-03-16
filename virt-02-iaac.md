@@ -47,8 +47,6 @@
 
 ![image](Capture10.PNG)
 ![image](Capture11.PNG)
-![image](Capture12.PNG)
-![image](Capture13.PNG)
 
 ### 4. Воспроизведите практическую часть лекции самостоятельно.
 - Создайте виртуальную машину.
