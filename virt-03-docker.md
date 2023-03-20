@@ -91,3 +91,90 @@ total 0
 root@dfc071afd6e7:/#
 ```
 
+### 4. Воспроизведите практическую часть лекции самостоятельно. Соберите Docker-образ с Ansible, загрузите на Docker Hub и пришлите ссылку вместе с остальными ответами к задачам.
+
+Ответ: https://hub.docker.com/r/femetsger/ansible
+
+```
+root@server1:/home/fedor/Netology/DevOps/docker-ansible# cat Dockerfile
+# Манифест Docker образа.
+FROM alpine:3.16
+RUN  CARGO_NET_GIT_FETCH_WITH_CLI=1 && \
+     apk --no-cache add sudo python3 py3-pip openssl ca-certificates \
+         sshpass openssh-client rsync git && \
+     apk --no-cache add --virtual build-dependencies python3-dev libffi-dev \
+         musl-dev gcc cargo openssl-dev libressl-dev build-base && \
+     apk del py3-packaging && \
+     pip install --upgrade pip wheel && \
+     pip install --upgrade cryptography cffi && \
+     pip install ansible==2.9.24 && \
+     pip install mitogen && \
+     apk add ansible-lint && \
+     pip install jmespath && \
+     pip install --upgrade pywinrm && \
+     apk del build-dependencies && \
+     rm -rf /var/cache/apk/* && \
+     rm -rf /root/.cache/pip && \
+     rm -rf /root/.cargo
+
+RUN  mkdir /ansible && \
+     mkdir -p /etc/ansible && \
+     echo 'localhost' > /etc/ansible/hosts
+
+WORKDIR /ansible
+
+CMD  [ "ansible-playbook", "--version" ]
+root@server1:/home/fedor/Netology/DevOps/docker-ansible#
+```
+```
+root@server1:/home/fedor/Netology/DevOps/docker-ansible# docker build -t femetsger/ansible:2.9.24 .
+[+] Building 1.2s (4/4) FINISHED
+ => [internal] load build definition from Dockerfile                                                                              0.0s
+ => => transferring dockerfile: 989B                                                                                              0.0s
+ => [internal] load .dockerignore                                                                                                 0.0s
+ => => transferring context: 2B                                                                                                   0.0s
+ => ERROR [internal] load metadata for docker.io/library/alpine:3.16.4                                                            1.1s
+ => [auth] library/alpine:pull token for registry-1.docker.io                                                                     0.0s
+------
+ > [internal] load metadata for docker.io/library/alpine:3.16.4:
+------
+ERROR: failed to solve: Canceled: context canceled
+root@server1:/home/fedor/Netology/DevOps/docker-ansible# vi Dockerfile
+root@server1:/home/fedor/Netology/DevOps/docker-ansible# docker build -t femetsger/ansible:2.9.24 .
+[+] Building 253.7s (9/9) FINISHED
+ => [internal] load build definition from Dockerfile                                                                              0.1s
+ => => transferring dockerfile: 987B                                                                                              0.0s
+ => [internal] load .dockerignore                                                                                                 0.0s
+ => => transferring context: 2B                                                                                                   0.0s
+ => [internal] load metadata for docker.io/library/alpine:3.16                                                                    1.0s
+ => [auth] library/alpine:pull token for registry-1.docker.io                                                                     0.0s
+ => CACHED [1/4] FROM docker.io/library/alpine:3.16@sha256:2cf17aa35fbcb6ece81692a64bfbadaf096590241ed9f95dd5f94f0e9f674784       0.0s
+ => [2/4] RUN  CARGO_NET_GIT_FETCH_WITH_CLI=1 &&      apk --no-cache add sudo python3 py3-pip openssl ca-certificates           245.3s
+ => [3/4] RUN  mkdir /ansible &&      mkdir -p /etc/ansible &&      echo 'localhost' > /etc/ansible/hosts                         1.0s
+ => [4/4] WORKDIR /ansible                                                                                                        0.1s
+ => exporting to image                                                                                                            6.1s
+ => => exporting layers                                                                                                           6.1s
+ => => writing image sha256:397ad4af1f88c22713f1f4e6bc9c6850e35e034a070fa43dcb4b2c27df7d433c                                      0.0s
+ => => naming to docker.io/femetsger/ansible:2.9.24                                                                               0.0s
+root@server1:/home/fedor/Netology/DevOps/docker-ansible#
+```
+```
+root@server1:/home/fedor/Netology/DevOps/docker-ansible# docker run femetsger/ansible:2.9.24
+ansible-playbook [core 2.13.6]
+  config file = None
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.10/site-packages/ansible
+  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.10.10 (main, Feb  9 2023, 02:08:34) [GCC 11.2.1 20220219]
+  jinja version = 3.0.3
+  libyaml = True
+root@server1:/home/fedor/Netology/DevOps/docker-ansible# docker push femetsger/ansible:2.9.24
+The push refers to repository [docker.io/femetsger/ansible]
+5f70bf18a086: Pushed
+797e8ec3d75b: Pushed
+0b02b9f8649b: Pushed
+aa5968d388b8: Mounted from library/alpine
+2.9.24: digest: sha256:ed8cdba1a9fe933d513478c18777d1785a0772f31ffa44f75f328a78103ae644 size: 1153
+root@server1:/home/fedor/Netology/DevOps/docker-ansible#
+```
