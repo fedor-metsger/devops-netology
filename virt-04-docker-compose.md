@@ -5,6 +5,7 @@
 ![image](Capture20.PNG)
 
 ### 2.1. Создайте вашу первую виртуальную машину в YandexCloud с помощью web-интерфейса YandexCloud.
+Ответ на скриншоте в ответе к пункту 2.2.
 
 ### 2.2.* (Необязательное задание) Создайте вашу первую виртуальную машину в YandexCloud с помощью Terraform (вместо использования веб-интерфейса YandexCloud). Используйте Terraform-код в директории (src/terraform). Чтобы получить зачёт, вам нужно предоставить вывод команды terraform apply и страницы свойств, созданной ВМ из личного кабинета YandexCloud.
 Ответ:
@@ -104,7 +105,7 @@ external_ip_address_node01_yandex_cloud = "51.250.14.212"
 internal_ip_address_node01_yandex_cloud = "10.1.2.26"
 fedor@DESKTOP-FEKCCDN:~/Netology/DevOps/hw_packer_terraform/terraform$
 ```
-~[image](Capture21.PNG)
+![image](Capture21.PNG)
 
 ### 3. С помощью Ansible и Docker Compose разверните на виртуальной машине из предыдущего задания систему мониторинга на основе Prometheus/Grafana. Используйте Ansible-код в директории (src/ansible).
 ### Чтобы получить зачёт, вам нужно предоставить вывод команды "docker ps" , все контейнеры, описанные в docker-compose, должны быть в статусе "Up".
