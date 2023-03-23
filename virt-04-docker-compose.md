@@ -109,6 +109,19 @@ fedor@DESKTOP-FEKCCDN:~/Netology/DevOps/hw_packer_terraform/terraform$
 
 ### 3. С помощью Ansible и Docker Compose разверните на виртуальной машине из предыдущего задания систему мониторинга на основе Prometheus/Grafana. Используйте Ansible-код в директории (src/ansible).
 ### Чтобы получить зачёт, вам нужно предоставить вывод команды "docker ps" , все контейнеры, описанные в docker-compose, должны быть в статусе "Up".
+Ответ:
+```
+[root@node01 centos]# docker ps
+CONTAINER ID   IMAGE                           COMMAND                 CREATED        STATUS                 PORTS                                                                              NAMES
+c6a2713d5d17   stefanprodan/caddy               "/sbin/tini -- caddy…" 2 minutes ago  Up 2 minutes           0.0.0.0:3000->3000/tcp, 0.0.0.0:9090-9091->9090-9091/tcp, 0.0.0.0:9093->9093/tcp   caddy
+4bcd34dbeabb   prom/node-exporter:v0.18.1       "/bin/node_exporter …" 2 minutes ago  Up 2 minutes           9100/tcp                                                                           nodeexporter
+608375fc8479   prom/pushgateway:v1.2.0          "/bin/pushgateway"     2 minutes ago  Up 2 minutes           9091/tcp                                                                           pushgateway
+9661d3ee6d9f   grafana/grafana:7.4.2            "/run.sh"              2 minutes ago  Up 2 minutes           3000/tcp                                                                           grafana
+5e31c28d8295   prom/prometheus:v2.17.1          "/bin/prometheus --c…" 2 minutes ago  Up 2 minutes           9090/tcp                                                                           prometheus
+00dc6cba130d   gcr.io/cadvisor/cadvisor:v0.47.0 "/usr/bin/cadvisor -…" 2 minutes ago  Up 2 minutes (healthy) 8080/tcp                                                                           cadvisor
+9e3d893d38f9   prom/alertmanager:v0.20.0        "/bin/alertmanager -…" 2 minutes ago  Up 2 minutes           9093/tcp                                                                           alertmanager
+[root@node01 centos]#
+```
 
 ### 4. Задача:
 1. Откройте веб-браузер, зайдите на страницу http://<внешний_ip_адрес_вашей_ВМ>:3000.
