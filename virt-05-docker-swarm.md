@@ -32,8 +32,31 @@ iw1by9ivgkh5ayzl5s3xinvox     node05.netology.yc   Ready     Active             
 xvrr0khmu8hlv51koyn37uplj     node06.netology.yc   Ready     Active                          23.0.2
 [root@node01 centos]#
 ```
-### 3. Создайте ваш первый, готовый к боевой эксплуатации кластер мониторинга, состоящий из стека микросервисов. Чтобы получить зачёт, предоставьте скриншот из терминала (консоли), с выводом команды:
-```docker service ls```
-### 4. Выполните на лидере Docker Swarm-кластера команду, указанную ниже, и дайте письменное описание её функционала — что она делает и зачем нужна (см.документацию: https://docs.docker.com/engine/swarm/swarm_manager_locking/)
-```docker swarm update --autolock=true):```
+### 3. Создайте ваш первый, готовый к боевой эксплуатации кластер мониторинга, состоящий из стека микросервисов. Чтобы получить зачёт, предоставьте скриншот из терминала (консоли), с выводом команды: `docker service ls`
+```
+[root@node01 centos]# docker service ls
+ID             NAME                                MODE         REPLICAS   IMAGE                                          PORTS
+0dcturd15tya   swarm_monitoring_alertmanager       replicated   1/1        stefanprodan/swarmprom-alertmanager:v0.14.0
+1oy5cqrnrwro   swarm_monitoring_caddy              replicated   1/1        stefanprodan/caddy:latest                      *:3000->3000/tcp, *:9090->9090/tcp, *:9093-9094->9093-9094/tcp
+wnzctkx1czon   swarm_monitoring_cadvisor           global       6/6        google/cadvisor:latest
+pd7ge54ormzh   swarm_monitoring_dockerd-exporter   global       6/6        stefanprodan/caddy:latest
+un3940ajutap   swarm_monitoring_grafana            replicated   1/1        stefanprodan/swarmprom-grafana:5.3.4
+gj2s9194tnid   swarm_monitoring_node-exporter      global       6/6        stefanprodan/swarmprom-node-exporter:v0.16.0
+2a13t6dsx37y   swarm_monitoring_prometheus         replicated   1/1        stefanprodan/swarmprom-prometheus:v2.5.0
+38wbmqug52os   swarm_monitoring_unsee              replicated   1/1        cloudflare/unsee:v0.8.0
+[root@node01 centos]#
+```
+### 4. Выполните на лидере Docker Swarm-кластера команду, указанную ниже, и дайте письменное описание её функционала — что она делает и зачем нужна (см.документацию: https://docs.docker.com/engine/swarm/swarm_manager_locking/) `docker swarm update --autolock=true`
+```
+[root@node01 centos]# docker swarm update --autolock=true
+Swarm updated.
+To unlock a swarm manager after it restarts, run the `docker swarm unlock`
+command and provide the following key:
+
+    SWMKEY-1-wP6Gth0qC+4CmXsN9qexpOVsT5hOIIEICB25ch3dQY4
+
+Please remember to store this key in a password manager, since without it you
+will not be able to restart the manager.
+[root@node01 centos]#
+```
 
