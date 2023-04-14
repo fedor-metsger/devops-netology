@@ -226,6 +226,7 @@
       **Восстановите БД test_db в новом контейнере.**
       **Приведите список операций, который вы применяли для бэкапа данных и восстановления.**
       
+      Создание backup-a и остановка контейнера:
       ```
       root@server1:/home/vagrant/Netology/DevOps/hw_sql# docker ps
       CONTAINER ID   IMAGE                  COMMAND                  CREATED       STATUS       PORTS                                       NAMES
@@ -236,5 +237,86 @@
       /var/lib/postgresql/backup # ls -l
       total 8
       -rw-r--r--    1 root     root          4178 Apr 14 09:54 test_db.dump
+      /var/lib/postgresql/backup # root@server1:/home/vagrant/Netology/DevOps/hw_sql# docker-compose -f docker-compose-pg.yaml stop
+      Stopping hw_sql_db_1 ... done
+      root@server1:/home/vagrant/Netology/DevOps/hw_sql#
+      ```
+      Создание нового контейнера и восстановление backup-а:
+      ```
+      root@server1:/home/vagrant/Netology/DevOps/hw_sql# cat docker-compose-pg-2.yaml
+      version: '3.3'
+      services:
+        db:
+          image: postgres:12.0-alpine
+          restart: always
+          environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - PGDATA=/var/lib/postgresql/data
+          ports:
+            - '5432:5432'
+          volumes:
+            - ./db2:/var/lib/postgresql/data
+            - ./backup:/var/lib/postgresql/backup
+      root@server1:/home/vagrant/Netology/DevOps/hw_sql# docker-compose -f docker-compose-pg-2.yaml up -d
+            Recreating hw_sql_db_1 ... done
+      root@server1:/home/vagrant/Netology/DevOps/hw_sql# docker exec -it hw_sql_db_1 /bin/sh
+      / # createdb -U postgres -T template0 test_db
+      / # psql -d test_db -U postgres -c "CREATE USER test_admin_user WITH PASSWORD 'postgres';"
+      CREATE ROLE
+      / # psql -d test_db -U postgres -c "CREATE USER test_simple_user WITH PASSWORD 'postgres';"
+      CREATE ROLE
+      / # cd /var/lib/postgresql/backup/
+      /var/lib/postgresql/backup # ls -l
+      total 8
+      -rw-r--r--    1 root     root          4178 Apr 14 09:54 test_db.dump
+      /var/lib/postgresql/backup # psql -d test_db -U postgres < test_db.dump
+      SET
+      SET
+      SET
+      SET
+      SET
+       set_config
+      ------------
+
+      (1 row)
+
+      SET
+      SET
+      SET
+      SET
+      SET
+      SET
+      CREATE TABLE
+      ALTER TABLE
+      CREATE SEQUENCE
+      ALTER TABLE
+      ALTER SEQUENCE
+      CREATE TABLE
+      ALTER TABLE
+      CREATE SEQUENCE
+      ALTER TABLE
+      ALTER SEQUENCE
+      ALTER TABLE
+      ALTER TABLE
+      COPY 5
+      COPY 5
+       setval
+      --------
+            5
+      (1 row)
+
+       setval
+      --------
+           11
+      (1 row)
+
+      ALTER TABLE
+      ALTER TABLE
+      ALTER TABLE
+      GRANT
+      GRANT
+      GRANT
+      GRANT
       /var/lib/postgresql/backup #
       ```
