@@ -86,5 +86,26 @@
 
       test_db=#
       ```
-      - **SQL-запрос для выдачи списка пользователей с правами над таблицами test_db;
-      - **список пользователей с правами над таблицами test_db.
+      - **SQL-запрос для выдачи списка пользователей с правами над таблицами test_db;**
+      ```
+      SELECT DISTINCT grantee
+        FROM information_schema.role_table_grants
+       WHERE table_catalog = 'test_db'
+         AND grantee != 'PUBLIC'
+      ```
+      - **список пользователей с правами над таблицами test_db.**
+      ```
+      test_db=# SELECT DISTINCT grantee
+      test_db-#   FROM information_schema.role_table_grants
+      test_db-#  WHERE table_catalog = 'test_db'
+      test_db-#    AND grantee != 'PUBLIC';
+       grantee
+      ------------------
+       postgres
+       test_admin_user
+       test_simple_user
+      (3 rows)
+
+
+      test_db=#
+      ```
