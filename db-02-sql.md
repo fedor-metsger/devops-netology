@@ -205,6 +205,36 @@
 
       test_db=#
       ```
+5. **Получите полную информацию по выполнению запроса выдачи всех пользователей из задачи 4 (используя директиву EXPLAIN). Приведите получившийся результат и объясните, что значат полученные значения.**
 
-
-            
+      ```
+      test_db=# EXPLAIN SELECT name
+      test_db-#   FROM clients
+      test_db-#  WHERE order_id IS NOT NULL;
+                              QUERY PLAN
+      -----------------------------------------------------------
+       Seq Scan on clients  (cost=0.00..13.50 rows=348 width=98)
+         Filter: (order_id IS NOT NULL)
+      (2 rows)
+      ```
+      Вывод команды **EXPLAIN** обозначает, что нужные записи находились последовательным сканированием всей таблицы **clients**
+      по фильтру **(order_id IS NOT NULL)** Так же выводится ориентировоный **cost** запроса, использованный планировщиком.
+      
+6. **Создайте бэкап БД test_db и поместите его в volume, предназначенный для бэкапов (см. задачу 1).**
+      **Остановите контейнер с PostgreSQL, но не удаляйте volumes.**
+      **Поднимите новый пустой контейнер с PostgreSQL.**
+      **Восстановите БД test_db в новом контейнере.**
+      **Приведите список операций, который вы применяли для бэкапа данных и восстановления.**
+      
+      ```
+      root@server1:/home/vagrant/Netology/DevOps/hw_sql# docker ps
+      CONTAINER ID   IMAGE                  COMMAND                  CREATED       STATUS       PORTS                                       NAMES
+      7cfdaef9ac41   postgres:12.0-alpine   "docker-entrypoint.s…"   3 hours ago   Up 3 hours   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   hw_sql_db_1
+      root@server1:/home/vagrant/Netology/DevOps/hw_sql# docker exec -it hw_sql_db_1 /bin/sh
+      / # cd /var/lib/postgresql/backup/
+      /var/lib/postgresql/backup # PGPASSWORD=postgres pg_dump -U postgres test_db > test_db.dump
+      /var/lib/postgresql/backup # ls -l
+      total 8
+      -rw-r--r--    1 root     root          4178 Apr 14 09:54 test_db.dump
+      /var/lib/postgresql/backup #
+      ```
