@@ -176,5 +176,35 @@
 
       test_db=#
       ```
-            
+3. **Часть пользователей из таблицы clients решили оформить заказы из таблицы orders.**
+      **Используя foreign keys, свяжите записи из таблиц, согласно таблице.**
+      **Приведите SQL-запросы для выполнения этих операций.**
+      ```
+      UPDATE clients SET order_id = (SELECT id FROM orders WHERE title = 'Книга')
+       WHERE name = 'Иванов Иван Иванович';
+ 
+      UPDATE clients SET order_id = (SELECT id FROM orders WHERE title = 'Монитор')
+       WHERE name = 'Петров Петр Петрович';
+
+      UPDATE clients SET order_id = (SELECT id FROM orders WHERE title = 'Гитара')
+       WHERE name = 'Иоганн Себастьян Бах';
+      ```
+
+      **Приведите SQL-запрос для выдачи всех пользователей, которые совершили заказ, а также вывод этого запроса.**
+      ```
+      test_db=# SELECT name
+      test_db-#   FROM clients
+      test_db-#  WHERE order_id IS NOT NULL;
+               name
+      ----------------------
+       Иванов Иван Иванович
+       Петров Петр Петрович
+       Иоганн Себастьян Бах
+      (3 rows)
+
+
+      test_db=#
+      ```
+
+
             
