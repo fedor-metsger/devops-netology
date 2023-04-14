@@ -19,5 +19,72 @@
         volumes:
           - ./db:/var/lib/postgresql/data
           - ./backup:/var/lib/postgresql/backup
-      root@server1:/home/vagrant/Netology/DevOps/hw_sql#
+      root@server1:/home/vagrant/Netology/DevOps/hw_sql# 
       ```
+2. **В БД из задачи 1:**
+      - **создайте пользователя test-admin-user и БД test_db;**
+      - **в БД test_db создайте таблицу orders и clients (спeцификация таблиц ниже);**
+      - **предоставьте привилегии на все операции пользователю test-admin-user на таблицы БД test_db;**
+      - **создайте пользователя test-simple-user;**
+      - **предоставьте пользователю test-simple-user права на SELECT/INSERT/UPDATE/DELETE этих таблиц БД test_db.**  
+      
+    **Приведите:**
+      - **итоговый список БД после выполнения пунктов выше;**
+
+      ```
+      postgres=# \l
+                                                List of databases
+        Name    |  Owner   | Encoding |  Collate   |   Ctype    | ICU Locale | Locale Provider |   Access privileges
+      -----------+----------+----------+------------+------------+------------+-----------------+-----------------------
+       postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            |
+       template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +      
+                 |          |          |            |            |            |                 | postgres=CTc/postgres
+       template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            | =c/postgres          +
+                 |          |          |            |            |            |                 | postgres=CTc/postgres
+       test_db   | postgres | UTF8     | en_US.utf8 | en_US.utf8 |            | libc            |     
+      (4 rows)
+      ```
+      - **описание таблиц (describe);**
+      ```
+      test_db=# \d
+                     List of relations
+       Schema |      Name      |   Type   |  Owner
+      --------+----------------+----------+----------
+       public | clients        | table    | postgres
+       public | clients_id_seq | sequence | postgres
+       public | orders         | table    | postgres
+       public | orders_id_seq  | sequence | postgres
+      (4 rows)
+
+
+      test_db=# \d orders
+                                   Table "public.orders"
+       Column |         Type          | Collation | Nullable |              Default
+      --------+-----------------------+-----------+----------+------------------------------------
+       id     | integer               |           | not null | nextval('orders_id_seq'::regclass)
+       title  | character varying(40) |           | not null |
+       price  | integer               |           | not null |
+      Indexes:
+          "orders_pkey" PRIMARY KEY, btree (id)
+      Referenced by:
+          TABLE "clients" CONSTRAINT "clients_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(id)
+
+
+      test_db=# \d clients
+                                    Table "public.clients"
+        Column  |         Type          | Collation | Nullable |               Default
+      ----------+-----------------------+-----------+----------+-------------------------------------
+       id       | integer               |           | not null | nextval('clients_id_seq'::regclass)
+       name     | character varying(40) |           | not null |
+       country  | character varying(40) |           | not null |
+       order_id | integer               |           |          |
+      Indexes:
+          "clients_pkey" PRIMARY KEY, btree (id)
+      Foreign-key constraints:
+          "clients_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(id)
+
+
+      test_db=#
+      ```
+      - **SQL-запрос для выдачи списка пользователей с правами над таблицами test_db;
+      - **список пользователей с правами над таблицами test_db.
