@@ -109,3 +109,72 @@
 
       test_db=#
       ```
+      
+2. **Используя SQL-синтаксис, наполните таблицы следующими тестовыми данными:**  
+      **Используя SQL-синтаксис: вычислите количество записей для каждой таблицы.**  
+      **Приведите в ответе:**  
+      - **запросы,**  
+            
+      ```
+      INSERT INTO orders (title, price)
+           VALUES ('Шоколад', 10),
+                  ('Принтер', 3000),
+                  ('Книга', 500),
+                  ('Монитор', 7000),
+                  ('Гитара', 4000);
+       
+      INSERT INTO clients (name, country)
+           VALUES ('Иванов Иван Иванович', 'USA'),
+                  ('Петров Петр Петрович', 'Canada'),
+                  ('Иоганн Себастьян Бах', 'Japan'),
+                  ('Ронни Джеймс Дио', 'Russia'),
+                  ('Ritchie Blackmore', 'Russia');
+      SELECT * FROM orders;
+      SELECT * FROM clients;
+      SELECT COUNT(*) FROM orders;
+      SELECT COUNT(*) FROM clients;
+      ```
+      
+             
+      - **результаты их выполнения.**
+      ```
+      test_db=# select * from orders;
+       id |  title  | price
+      ----+---------+-------
+        7 | Шоколад |    10
+        8 | Принтер |  3000
+        9 | Книга   |   500
+       10 | Монитор |  7000
+       11 | Гитара  |  4000
+      (5 rows)
+
+
+      test_db=# select * from clients;
+       id |         name         | country | order_id
+      ----+----------------------+---------+----------
+        1 | Иванов Иван Иванович | USA     |
+        2 | Петров Петр Петрович | Canada  |
+        3 | Иоганн Себастьян Бах | Japan   |
+        4 | Ронни Джеймс Дио     | Russia  |
+        5 | Ritchie Blackmore    | Russia  |
+      (5 rows)
+
+
+      test_db=# SELECT COUNT(*) FROM clients;
+       count
+      -------
+           5
+      (1 row)
+
+
+      test_db=# SELECT COUNT(*) FROM orders;
+       count
+      -------
+           5
+      (1 row)
+
+
+      test_db=#
+      ```
+            
+            
