@@ -157,5 +157,41 @@ test_database(#                     WHERE tablename = 'orders');
 test_database=#
 ```
 
+3. **Архитектор и администратор БД выяснили, что ваша таблица orders разрослась до невиданных размеров и поиск по ней занимает долгое время. Вам как успешному выпускнику курсов DevOps в Нетологии предложили провести разбиение таблицы на 2: шардировать на orders_1 - price>499 и orders_2 - price<=499.**
+
+**Предложите SQL-транзакцию для проведения этой операции.**
+
+**Можно ли было изначально исключить ручное разбиение при проектировании таблицы orders?**
+
+4 **Используя утилиту pg_dump, создайте бекап БД test_database.**
+```
+/ # pg_dump -U postgres test_database > test_database.dump
+/ #
+```
+
+**Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца title для таблиц test_database?**
+
+Ответ: Я бы добавил в конец команду `ALTER TABLE ONLY public.orders ADD CONSTRAINT orders_title UNIQUE (title);`
+```
+/ # diff test_database*
+--- test_database.dump
++++ test_database_new.dump
+@@ -94,6 +94,14 @@
+
+
+ --
++-- Name: orders orders_title; Type: CONSTRAINT; Schema: public; Owner: postgres
++--
++
++ALTER TABLE ONLY public.orders
++    ADD CONSTRAINT orders_title UNIQUE (title);
++
++
++--
+ -- PostgreSQL database dump complete
+ --
+
+/ #
+```
 
 
