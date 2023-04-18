@@ -160,8 +160,34 @@ test_database=#
 3. **Архитектор и администратор БД выяснили, что ваша таблица orders разрослась до невиданных размеров и поиск по ней занимает долгое время. Вам как успешному выпускнику курсов DevOps в Нетологии предложили провести разбиение таблицы на 2: шардировать на orders_1 - price>499 и orders_2 - price<=499.**
 
 **Предложите SQL-транзакцию для проведения этой операции.**
+```
+BEGIN;
+CREATE TABLE new_orders (
+    id serial,
+    title character varying(80) NOT NULL,
+    price integer DEFAULT 0,
+    CONSTRAINT new_orders_pkey PRIMARY KEY (id, price) 
+) PARTITION BY RANGE(price);
+
+CREATE TABLE orders_1 PARTITION OF new_orders
+    FOR VALUES FROM (500) TO (MAXVALUE);
+ALTER TABLE ONLY orders_1
+    ADD CONSTRAINT orders_1_check CHECK (price > 499);
+
+CREATE TABLE orders_2 PARTITION OF new_orders
+    FOR VALUES FROM (MINVALUE) TO (500);
+ALTER TABLE ONLY orders_2
+    ADD CONSTRAINT orders_2_check CHECK (price <= 499);
+
+INSERT INTO new_orders (SELECT * FROM orders);
+DROP TABLE orders;
+ALTER TABLE new_orders RENAME TO orders;
+COMMIT;
+```
 
 **Можно ли было изначально исключить ручное разбиение при проектировании таблицы orders?**
+
+Ответ: Ручного разбиения можно было избежать, если изначально сделать таблицу партиционированной по полю **price**.
 
 4 **Используя утилиту pg_dump, создайте бекап БД test_database.**
 ```
