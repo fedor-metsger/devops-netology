@@ -9,12 +9,12 @@
     Ответ: **8.0.33 MySQL Community Server - GPL**
   
 ```
-mysql> status;
+mysql> STATUS;
 --------------
 mysql  Ver 8.0.33 for Linux on x86_64 (MySQL Community Server - GPL)
 
-Connection id:          12
-Current database:       mysql
+Connection id:          14
+Current database:       test_db
 Current user:           root@localhost
 SSL:                    Not in use
 Current pager:          stdout
@@ -29,9 +29,9 @@ Client characterset:    latin1
 Conn.  characterset:    latin1
 UNIX socket:            /var/run/mysqld/mysqld.sock
 Binary data as:         Hexadecimal
-Uptime:                 38 min 42 sec
+Uptime:                 1 hour 46 min 16 sec
 
-Threads: 2  Questions: 173  Slow queries: 0  Opens: 302  Flush tables: 3  Open tables: 220  Queries per second avg: 0.074
+Threads: 2  Questions: 287  Slow queries: 0  Opens: 484  Flush tables: 3  Open tables: 402  Queries per second avg: 0.045
 --------------
 
 mysql>
@@ -40,50 +40,12 @@ mysql>
    **Подключитесь к восстановленной БД и получите список таблиц из этой БД.**
 ```
 mysql> SHOW TABLES;
-+------------------------------------------------------+
-| Tables_in_mysql                                      |
-+------------------------------------------------------+
-| columns_priv                                         |
-| component                                            |
-| db                                                   |
-| default_roles                                        |
-| engine_cost                                          |
-| func                                                 |
-| general_log                                          |
-| global_grants                                        |
-| gtid_executed                                        |
-| help_category                                        |
-| help_keyword                                         |
-| help_relation                                        |
-| help_topic                                           |
-| innodb_index_stats                                   |
-| innodb_table_stats                                   |
-| ndb_binlog_index                                     |
-| orders                                               |
-| password_history                                     |
-| plugin                                               |
-| procs_priv                                           |
-| proxies_priv                                         |
-| replication_asynchronous_connection_failover         |
-| replication_asynchronous_connection_failover_managed |
-| replication_group_configuration_version              |
-| replication_group_member_actions                     |
-| role_edges                                           |
-| server_cost                                          |
-| servers                                              |
-| slave_master_info                                    |
-| slave_relay_log_info                                 |
-| slave_worker_info                                    |
-| slow_log                                             |
-| tables_priv                                          |
-| time_zone                                            |
-| time_zone_leap_second                                |
-| time_zone_name                                       |
-| time_zone_transition                                 |
-| time_zone_transition_type                            |
-| user                                                 |
-+------------------------------------------------------+
-39 rows in set (0.00 sec)
++-------------------+
+| Tables_in_test_db |
++-------------------+
+| orders            |
++-------------------+
+1 row in set (0.01 sec)
 
 mysql>
 ```
@@ -104,4 +66,48 @@ mysql> SELECT COUNT(*)
 
 mysql>
 ```
+2. **Создайте пользователя test в БД c паролем test-pass, используя:**
+   - плагин авторизации mysql_native_password
+   - срок истечения пароля — 180 дней
+   - количество попыток авторизации — 3
+   - максимальное количество запросов в час — 100
+   - аттрибуты пользователя:
+   - Фамилия "Pretty"
+   - Имя "James".
+```
+mysql>     CREATE USER 'test'
+    -> IDENTIFIED WITH mysql_native_password BY 'test-pass'
+    -> UERIES_PER_HOUR 100
+  P      WITH MAX_QUERIES_PER_HOUR 100
+    ->   PASSWORD EXPIRE INTERVAL 180 DAY FAILED_LOGIN_ATTEMPTS 3
+    ->  ATTRIBUTE '{"fname": "James", "lname": "Pretty"}';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+```
+   
+   **Предоставьте привелегии пользователю test на операции SELECT базы test_db.**
+```
+mysql> GRANT SELECT
+    ->    ON test_db.*
+    ->    TO 'test';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>   
+```
+   **Используя таблицу INFORMATION_SCHEMA.USER_ATTRIBUTES, получите данные по пользователю test и приведите в ответе к задаче.**
+```
+mysql> SELECT *
+    ->   FROM INFORMATION_SCHEMA.USER_ATTRIBUTES
+    ->  WHERE user = 'test';
++------+------+---------------------------------------+
+| USER | HOST | ATTRIBUTE                             |
++------+------+---------------------------------------+
+| test | %    | {"fname": "James", "lname": "Pretty"} |
++------+------+---------------------------------------+
+1 row in set (0.00 sec)
+
+mysql>
+```
+
 
