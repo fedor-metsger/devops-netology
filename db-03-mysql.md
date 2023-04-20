@@ -110,4 +110,112 @@ mysql> SELECT *
 mysql>
 ```
 
+3. **Установите профилирование SET profiling = 1. Изучите вывод профилирования команд SHOW PROFILES;**
+
+```
+mysql> SET profiling = 1;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> SHOW PROFILES;
+Empty set, 1 warning (0.00 sec)
+
+mysql> SELECT * FROM orders;
++----+-----------------------+-------+
+| id | title                 | price |
++----+-----------------------+-------+
+|  1 | War and Peace         |   100 |
+|  2 | My little pony        |   500 |
+|  3 | Adventure mysql times |   300 |
+|  4 | Server gravity falls  |   300 |
+|  5 | Log gossips           |   123 |
++----+-----------------------+-------+
+5 rows in set (0.01 sec)
+
+mysql> SHOW PROFILES;
++----------+------------+----------------------+
+| Query_ID | Duration   | Query                |
++----------+------------+----------------------+
+|        1 | 0.00215475 | SELECT * FROM orders |
++----------+------------+----------------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql>
+```
+
+   **Исследуйте, какой engine используется в таблице БД test_db и приведите в ответе.**
+
+   Ответ: **InnoDB**
+  
+```
+mysql> SELECT table_name, engine
+    ->   FROM information_schema.tables
+    ->
+    ->  WHERE table_schema = 'test_db';
++------------+--------+
+| TABLE_NAME | ENGINE |
++------------+--------+
+| orders     | InnoDB |
++------------+--------+
+1 row in set (0.00 sec)
+
+mysql>
+```
+   **Измените engine и приведите время выполнения и запрос на изменения из профайлера в ответе:**
+   
+   Ответ: Время выполнения:
+   - На **MyISAM**: **0.00075700**
+   - На **InnoDB**: **0.00215475**
+
+```
+mysql> ALTER TABLE orders ENGINE = MyISAM;
+Query OK, 5 rows affected (0.05 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT table_name, engine
+    ->   FROM information_schema.tables
+    ->  WHERE table_schema = 'test_db';
++------------+--------+
+| TABLE_NAME | ENGINE |
++------------+--------+
+| orders     | MyISAM |
++------------+--------+
+1 row in set (0.01 sec)
+
+mysql> SELECT * FROM orders;
++----+-----------------------+-------+
+| id | title                 | price |
++----+-----------------------+-------+
+|  1 | War and Peace         |   100 |
+|  2 | My little pony        |   500 |
+|  3 | Adventure mysql times |   300 |
+|  4 | Server gravity falls  |   300 |
+|  5 | Log gossips           |   123 |
++----+-----------------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> SHOW PROFILES;
++----------+------------+---------------------------------------------------------------------------------------------------------------------+
+| Query_ID | Duration   | Query                                                                                                               |
++----------+------------+---------------------------------------------------------------------------------------------------------------------+
+|        7 | 0.01065675 | show status like '%engine%'                                                                                         |
+|        8 | 0.00022400 | status like '%engine%'                                                                                              |
+|        9 | 0.00037650 | select DATABASE(), USER() limit 1                                                                                   |
+|       10 | 0.00032200 | select @@character_set_client, @@character_set_connection, @@character_set_server, @@character_set_database limit 1 |
+|       11 | 0.01766750 | SHOW TABLE STATUS WHERE name = 'orders'                                                                             |
+|       12 | 0.00016350 | SHOW TABLE STATUS LIKE 'Engine' WHERE name = 'orders'                                                               |
+|       13 | 0.01100825 | help 'show table status'                                                                                            |
+|       14 | 0.01176850 | SHOW TABLE STATUS LIKE 'orders'                                                                                     |
+|       15 | 0.00862725 | SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES WHERE  TABLE_SCHEMA = 'dbname'                             |
+|       16 | 0.00923525 | SELECT TABLE_NAME,        ENGINE FROM   information_schema.TABLES WHERE  TABLE_SCHEMA = 'test_db'                   |
+|       17 | 0.00549525 | SELECT table_name, engine FROM information_schema.tables WHERE table_schema = 'test_db'                             |
+|       18 | 0.00579725 | show engines                                                                                                        |
+|       19 | 0.05594600 | ALTER TABLE orders ENGINE = MyISAM                                                                                  |
+|       20 | 0.00903325 | SELECT table_name, engine FROM information_schema.tables  WHERE table_schema = 'test_db'                            |
+|       21 | 0.00075700 | SELECT * FROM orders                                                                                                |
++----------+------------+---------------------------------------------------------------------------------------------------------------------+
+15 rows in set, 1 warning (0.00 sec)
+
+mysql>
+```
+
 
