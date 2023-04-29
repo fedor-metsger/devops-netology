@@ -167,3 +167,62 @@ yellow open   ind-2 cyzBEa3sRMCs4Z1sjJt7_g   2   1          0            0      
 Ответ: Я думаю. статусы индексов связаны с количеством реплик. Так как в кластере всего один узел,
 все реплики вынуждены размещаться на нём. И если реплик больше 0, то статус индекса становится **жёлтый**.  
 А так как в кластере есть жёлтые индексы, то и сам кластер становится жёлтым.
+
+3. **Создайте директорию {путь до корневой директории с Elasticsearch в образе}/snapshots.**
+   **Используя API, зарегистрируйте эту директорию как snapshot repository c именем netology_backup.**
+   **Приведите в ответе запрос API и результат вызова API для создания репозитория.**
+```
+wget --no-check-certificate --method=PUT --body-data='
+{
+    "type": "fs",
+    "settings": {
+        "location": "snapshots"
+    }
+}' https://elastic:mw6JKF23CKKtBCAbf9md@192.168.1.43:9200/_snapshot/netology_backup
+```
+   Ответ:
+```
+{
+    "acknowledged": true
+}
+```
+   **Создайте индекс test с 0 реплик и 1 шардом и приведите в ответе список индексов.**
+```
+health status index uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test  XuV9ustxTfC8m763ffPGNw   1   0          0            0       225b           225b
+```
+
+   **Создайте snapshot состояния кластера Elasticsearch.**
+   **Приведите в ответе список файлов в директории со snapshot.**
+```
+total 36
+-rw-r--r-- 1 elasticsearch elasticsearch   841 Apr 29 16:27 index-0
+-rw-r--r-- 1 elasticsearch elasticsearch     8 Apr 29 16:27 index.latest
+drwxr-xr-x 4 elasticsearch elasticsearch  4096 Apr 29 16:27 indices
+-rw-r--r-- 1 elasticsearch elasticsearch 18898 Apr 29 16:27 meta-J1QQORlNQQKbHWmZc4Jn1A.dat
+-rw-r--r-- 1 elasticsearch elasticsearch   350 Apr 29 16:27 snap-J1QQORlNQQKbHWmZc4Jn1A.dat
+bash-4.2$
+```
+
+   **Удалите индекс test и создайте индекс test-2. Приведите в ответе список индексов.**
+```
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 N0Py4b_pSVyi3K5iiQpXsw   1   0          0            0       225b           225b
+```
+   **Восстановите состояние кластера Elasticsearch из snapshot, созданного ранее.**
+   **Приведите в ответе запрос к API восстановления и итоговый список индексов.**
+```
+wget --no-check-certificate --method=PUT https://192.168.1.43:9200/_snapshot/netology_backup/test_snapshot/_restore
+```
+   Ответ:
+```
+{
+    "accepted": true
+}
+```
+   Список индексов:
+```
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 N0Py4b_pSVyi3K5iiQpXsw   1   0          0            0       225b           225b
+green  open   test   kYuak2MOSGC2ESg6BFvAGQ   1   0          0            0       225b           225b
+```
