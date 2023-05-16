@@ -107,4 +107,67 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 vagrant@server1:~/Netology/DevOps/ter-homeworks/01/src$
 ```
 
+**Уничтожьте созданные ресурсы с помощью terraform. Убедитесь, что все ресурсы удалены. Приложите содержимое файла terraform.tfstate.**
 
+```
+vagrant@server1:~/Netology/DevOps/ter-homeworks/01/src$ cat terraform.tfstate
+{
+  "version": 4,
+  "terraform_version": "1.4.6",
+  "serial": 20,
+  "lineage": "a1c2d225-0173-020b-5f61-70ec9fe7029a",
+  "outputs": {},
+  "resources": [],
+  "check_results": null
+}
+vagrant@server1:~/Netology/DevOps/ter-homeworks/01/src$
+```
+
+**Объясните, почему при этом не был удален docker образ nginx:latest ? Ответ подкрепите выдержкой из документации провайдера.**
+
+Ответ: Образ не был удалён, так как параметр **keep_locally** установлен в значение **true**:
+```
+keep_locally (Boolean) If true, then the Docker image won't be deleted on destroy
+operation. If this is false, it will delete the image from the docker local storage on destroy
+operation.
+```
+
+2. **Создайте с его помощью любую виртуальную машину. В качестве ответа приложите plan для создаваемого ресурса и скриншот созданного в VB ресурса.**
+
+```
+C:\CODE\Netology\ter-homeworks\01\src>terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # virtualbox_vm.vm1 will be created
+  + resource "virtualbox_vm" "vm1" {
+      + cpus   = 1
+      + id     = (known after apply)
+      + image  = "https://app.vagrantup.com/shekeriev/boxes/debian-11/versions/0.2/providers/virtualbox.box"
+      + memory = "512 mib"
+      + name   = "debian-11"
+      + status = "running"
+
+      + network_adapter {
+          + device                 = "IntelPro1000MTDesktop"
+          + host_interface         = "VirtualBox Host-Only Ethernet Adapter"
+          + ipv4_address           = (known after apply)
+          + ipv4_address_available = (known after apply)
+          + mac_address            = (known after apply)
+          + status                 = (known after apply)
+          + type                   = "hostonly"
+        }
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + IPAddress = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+```
+
+![Image](Capture25.PNG)
