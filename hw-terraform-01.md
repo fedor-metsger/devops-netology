@@ -90,13 +90,21 @@ name  = "example_${random_password.random_string.result}"
 
 ```
 vagrant@server1:~/Netology/DevOps/ter-homeworks/01/src$ docker ps
-CONTAINER ID   IMAGE                  COMMAND                  CREATED         STATUS                          PORTS                                       NAMES
-cb7ce9d39b8c   448a08f1d2f9           "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes                    0.0.0.0:8000->80/tcp                        example_Tdu3IOJ4NNd8I9Hu
+CONTAINER ID   IMAGE                  COMMAND                  CREATED         STATUS           PORTS                   NAMES
+cb7ce9d39b8c   448a08f1d2f9           "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes     0.0.0.0:8000->80/tcp    example_Tdu3IOJ4NNd8I9Hu
 vagrant@server1:~/Netology/DevOps/ter-homeworks/01/src$
 ```
 
 **Объясните своими словами, в чем может быть опасность применения ключа -auto-approve ?**
 
-Ответ: Опция **--auto-approve** пропускает интерактивное подтвержнение плана перед применением. Опасность её использования заключается в возможности внесения необдуманных изменений.
+Ответ: Опция **--auto-approve** пропускает интерактивное подтвержнение плана перед применением. Опасность её использования заключается в увеличении вероятности внесения необдуманных изменений.
+
+**В качестве ответа дополнительно приложите вывод команды** `docker ps`
+
+```
+vagrant@server1:~/Netology/DevOps/ter-homeworks/01/src$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+vagrant@server1:~/Netology/DevOps/ter-homeworks/01/src$
+```
 
 
