@@ -34,7 +34,7 @@ desc = the specified number of cores is not available on platform "standard-v1";
 **В качестве решения приложите:**
 
 - **скриншот ЛК Yandex Cloud с созданной ВМ,**
-![image](Capture25.PNG)
+![image](Capture26.PNG)
 
 - **скриншот успешного подключения к консоли ВМ через ssh,**
-![image](Capture26.PNG)
+![image](Capture27.PNG)
