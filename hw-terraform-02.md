@@ -38,3 +38,40 @@ desc = the specified number of cores is not available on platform "standard-v1";
 
 - **скриншот успешного подключения к консоли ВМ через ssh,**
 ![image](Capture27.PNG)
+
+4. **В качестве решения приложите вывод значений ip-адресов команды** `terraform output`
+```
+vagrant@server1:~/Netology/DevOps/ter-homeworks/02/src$ terraform output
+external_ips = {
+  "db_ip" = "158.160.61.204"
+  "web_ip" = "84.252.129.78"
+}
+vagrant@server1:~/Netology/DevOps/ter-homeworks/02/src$
+```
+7. **Изучите содержимое файла console.tf. Откройте terraform console, выполните следующие задания:**
+
+- **Напишите, какой командой можно отобразить второй элемент списка test_list?**
+```
+> local.test_list[1]
+"staging"
+>
+```
+- **Найдите длину списка test_list с помощью функции length(<имя переменной>).**
+```
+> length(local.test_list)
+3
+>
+```
+- **Напишите, какой командой можно отобразить значение ключа admin из map test_map?**
+```
+> local.test_map.admin
+"John"
+>
+```
+- **Напишите interpolation выражение, результатом которого будет: "John is admin for production server based on OS ubuntu-20-04 with X vcpu, Y ram and Z virtual disks", используйте данные из переменных test_list, test_map, servers и функцию length() для подстановки значений.**
+
+```
+> "${local.test_map.admin} is admin for ${local.test_list[2]} server based on OS ${local.servers.production.image} with ${local.servers.production.cpu} vcpu, ${local.servers.production.ram} ram and ${length(local.servers.production.disks)} virtual disks"
+"John is admin for production server based on OS ubuntu-20-04 with 10 vcpu, 40 ram and 4 virtual disks"
+>
+```
