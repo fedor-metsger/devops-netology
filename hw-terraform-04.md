@@ -154,3 +154,87 @@
    **Удалите из стейта модуль vpc.**
 
    **Импортируйте его обратно. Проверьте terraform plan - изменений быть не должно. Приложите список выполненных команд и вывод.**
+   
+   Прилагаю вывод команд:
+   
+   ```
+   fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/ter-homeworks/04/src$ terraform state list
+   data.template_file.userdata
+   module.test-vm.data.yandex_compute_image.my_image
+   module.test-vm.yandex_compute_instance.vm[0]
+   module.vpc.yandex_vpc_network.net_name
+   module.vpc.yandex_vpc_subnet.subnet_name
+   fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/ter-homeworks/04/src$ terraform state show module.vpc.yandex_vpc_network.net_name
+   \# module.vpc.yandex_vpc_network.net_name:
+   resource "yandex_vpc_network" "net_name" {
+       created_at = "2023-06-02T14:02:58Z"
+       folder_id  = "b1go2coto23a6o9qniv9"
+       id         = "enpjchrqk9unqff5gajr"
+       labels     = {}
+       name       = "develop"
+       subnet_ids = []
+   }
+   fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/ter-homeworks/04/src$ terraform state show module.vpc.yandex_vpc_subnet.subnet_name
+   \# module.vpc.yandex_vpc_subnet.subnet_name:
+   resource "yandex_vpc_subnet" "subnet_name" {
+    created_at     = "2023-06-02T14:02:58Z"
+    folder_id      = "b1go2coto23a6o9qniv9"
+    id             = "e9b4go0gvvkq6q8plbf0"
+    labels         = {}
+    name           = "develop-ru-central1-a"
+    network_id     = "enpjchrqk9unqff5gajr"
+    v4_cidr_blocks = [
+        "10.0.1.0/24",
+    ]
+    v6_cidr_blocks = []
+    zone           = "ru-central1-a"
+   }
+   fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/ter-homeworks/04/src$ terraform state rm 'module.vpc'
+   Removed module.vpc.yandex_vpc_network.net_name
+   Removed module.vpc.yandex_vpc_subnet.subnet_name
+   Successfully removed 2 resource instance(s).
+   fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/ter-homeworks/04/src$ terraform import module.vpc.yandex_vpc_network.net_name enpjchrqk9unqff5gajr
+   data.template_file.userdata: Reading...
+   data.template_file.userdata: Read complete after 0s [id=a188abb0daeef04def27c9164c98402a79667f6164cd2816a7b9664d4afba9a1]
+   module.vpc.yandex_vpc_network.net_name: Importing from ID "enpjchrqk9unqff5gajr"...
+   module.vpc.yandex_vpc_network.net_name: Import prepared!
+     Prepared yandex_vpc_network for import
+   module.vpc.yandex_vpc_network.net_name: Refreshing state... [id=enpjchrqk9unqff5gajr]
+   module.test-vm.data.yandex_compute_image.my_image: Reading...
+   module.test-vm.data.yandex_compute_image.my_image: Read complete after 2s [id=fd8lape4adm5melne14m]
+
+   Import successful!
+
+   The resources that were imported are shown above. These resources are now in
+   your Terraform state and will henceforth be managed by Terraform.
+
+   fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/ter-homeworks/04/src$ terraform import module.vpc.yandex_vpc_subnet.subnet_name e9b4go0gvvkq6q8plbf0
+   data.template_file.userdata: Reading...
+   data.template_file.userdata: Read complete after 0s [id=a188abb0daeef04def27c9164c98402a79667f6164cd2816a7b9664d4afba9a1]
+   module.test-vm.data.yandex_compute_image.my_image: Reading...
+   module.vpc.yandex_vpc_subnet.subnet_name: Importing from ID "e9b4go0gvvkq6q8plbf0"...
+   module.vpc.yandex_vpc_subnet.subnet_name: Import prepared!
+     Prepared yandex_vpc_subnet for import
+   module.vpc.yandex_vpc_subnet.subnet_name: Refreshing state... [id=e9b4go0gvvkq6q8plbf0]
+   module.test-vm.data.yandex_compute_image.my_image: Read complete after 2s [id=fd8lape4adm5melne14m]
+
+   Import successful!
+
+   The resources that were imported are shown above. These resources are now in
+   your Terraform state and will henceforth be managed by Terraform.
+
+   fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/ter-homeworks/04/src$ terraform plan
+   module.test-vm.data.yandex_compute_image.my_image: Reading...
+   data.template_file.userdata: Reading...
+   module.vpc.yandex_vpc_network.net_name: Refreshing state... [id=enpjchrqk9unqff5gajr]
+   data.template_file.userdata: Read complete after 0s [id=a188abb0daeef04def27c9164c98402a79667f6164cd2816a7b9664d4afba9a1]
+   module.test-vm.data.yandex_compute_image.my_image: Read complete after 2s [id=fd8lape4adm5melne14m]
+   module.vpc.yandex_vpc_subnet.subnet_name: Refreshing state... [id=e9b4go0gvvkq6q8plbf0]
+   module.test-vm.yandex_compute_instance.vm[0]: Refreshing state... [id=fhm5mc92ioq0pk5bu04u]
+
+   No changes. Your infrastructure matches the configuration.
+
+   Terraform has compared your real infrastructure against your configuration and found no differences, so no changes are needed.
+   fedor@fedor-Z68P-DS3:~/CODE/Netology/DevOps/ter-homeworks/04/src$
+   ```
+
