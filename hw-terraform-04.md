@@ -5,7 +5,7 @@
 
    **Добавьте в файл cloud-init.yml установку nginx.**
    
-   Привожу файл **cloud-init.yml**:
+   Привожу файл [cloud-init.yml](https://github.com/fedor-metsger/ter-homeworks/blob/terraform-04/04/src/cloud-init.yml):
 
    ```
    #cloud-config
