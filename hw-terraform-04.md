@@ -244,6 +244,12 @@
    
    Привожу код в [отдельной ветке](https://github.com/fedor-metsger/ter-homeworks/tree/terraform-04-add/04/src).
    
+   Привожу скриншоты с YC:
+   
+   ![](https://github.com/fedor-metsger/devops-netology/blob/main/Capture29.png)
+   
+   ![](https://github.com/fedor-metsger/devops-netology/blob/main/Capture30.png)
+   
    План выполнения:
    ```
    module.test-vm.data.yandex_compute_image.my_image: Reading...
