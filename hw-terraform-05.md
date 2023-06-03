@@ -14,6 +14,7 @@
    - CKV_YC_4: "Ensure compute instance does not have serial console enabled." - **не обнаружена**
    - CKV_YC_2: "Ensure compute instance does not have public IP." - **обнаружена**
    - CKV_YC_11: "Ensure security group is assigned to network interface." - **обнаружена**
+   - CKV_YC_19: "Ensure security group does not contain allow-all rules." - **не обнаружена**
    
 2. **Повторите демонстрацию лекции: настройте YDB, S3 bucket, yandex service account, права доступа и мигрируйте State проекта в S3 с блокировками. Предоставьте скриншоты процесса в качестве ответа.**
 
