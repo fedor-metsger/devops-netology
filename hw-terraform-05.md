@@ -11,9 +11,9 @@
    - variable "..." is declared but not used
    
    Ошибки **checkov**:
-   - CKV_YC_4: "Ensure compute instance does not have serial console enabled."
-   - CKV_YC_2: "Ensure compute instance does not have public IP."
-   - CKV_YC_11: "Ensure security group is assigned to network interface."
+   - CKV_YC_4: "Ensure compute instance does not have serial console enabled." - **не обнаружена**
+   - CKV_YC_2: "Ensure compute instance does not have public IP." - **обнаружена**
+   - CKV_YC_11: "Ensure security group is assigned to network interface." - **обнаружена**
    
 2. **Повторите демонстрацию лекции: настройте YDB, S3 bucket, yandex service account, права доступа и мигрируйте State проекта в S3 с блокировками. Предоставьте скриншоты процесса в качестве ответа.**
 
@@ -46,3 +46,15 @@
    Принудительное снятие блокировки:
    ![](https://github.com/fedor-metsger/devops-netology/blob/main/Screenshot%20at%202023-06-03%2019-41-39.png)
    
+3. **Пришлите ссылку на PR для ревью(вливать код в 'terraform-05' не нужно).**
+
+   Ссылка на [Pull request](https://github.com/fedor-metsger/ter-homeworks/pull/1).
+   
+4. **Напишите переменные с валидацией и протестируйте их, заполнив default верными и неверными значениями. Предоставьте скриншоты проверок:**
+
+   **type=string, description="ip-адрес", проверка что значение переменной содержит верный IP-адрес с помощью функций cidrhost() или regex(). Тесты: "192.168.0.1" и "1920.1680.0.1"**
+   
+   **type=list(string), description="список ip-адресов", проверка что все адреса верны. Тесты: ["192.168.0.1", "1.1.1.1", "127.0.0.1"] и ["192.168.0.1", "1.1.1.1", "1270.0.0.1"]**
+   
+   
+
