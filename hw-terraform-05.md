@@ -81,4 +81,15 @@
    
    ![](https://github.com/fedor-metsger/devops-netology/blob/main/Screenshot%20at%202023-06-03%2021-55-31.png)
    
+5. **Напишите переменные с валидацией:**
 
+   **type=string, description="любая строка", проверка что строка не содержит в себе символов верхнего регистра**
+   
+   **type=object, проверка что введено только одно из опциональных значений по примеру:**
+   
+   Переменные описаны [здесь](https://github.com/fedor-metsger/ter-homeworks/blob/5dc4716c536fc23c134d9d1502c4fdd58529f0ac/04/src/variables.tf#L49).
+   
+   Результат проверки:
+   ![]()
+
+   
