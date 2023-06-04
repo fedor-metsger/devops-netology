@@ -71,6 +71,8 @@
 
    **type=string, description="ip-адрес", проверка что значение переменной содержит верный IP-адрес с помощью функций cidrhost() или regex(). Тесты: "192.168.0.1" и "1920.1680.0.1"**
    
+   Переменные описаны [здесь](https://github.com/fedor-metsger/ter-homeworks/blob/5dc4716c536fc23c134d9d1502c4fdd58529f0ac/04/src/variables.tf#L23).
+   
    Прилагаю скриншот ошибки:
    
    ![](https://github.com/fedor-metsger/devops-netology/blob/main/Screenshot%20at%202023-06-03%2021-36-27.png)
@@ -90,6 +92,7 @@
    Переменные описаны [здесь](https://github.com/fedor-metsger/ter-homeworks/blob/5dc4716c536fc23c134d9d1502c4fdd58529f0ac/04/src/variables.tf#L49).
    
    Результат проверки:
-   ![]()
+   
+   ![](https://github.com/fedor-metsger/devops-netology/blob/main/Screenshot%20at%202023-06-04%2017-21-48.png)
 
    
